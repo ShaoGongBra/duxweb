@@ -1,6 +1,6 @@
 import { Modal, Select, Input, Empty, Spin, Pagination, Button, Progress } from '@arco-design/web-react'
 import { IconClose, IconFolder, IconDelete, IconUpload } from '@arco-design/web-react/icon'
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { QuickEvent, throttleRequest, upload } from '../../utils'
 
 const api = {

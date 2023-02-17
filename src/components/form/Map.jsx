@@ -1,3 +1,4 @@
+import React from 'react'
 import { Map as AMap, APILoader, Marker } from '@uiw/react-amap'
 import { useCallback, useRef, useState, useEffect } from 'react'
 import { Input, List, Avatar } from '@arco-design/web-react'
@@ -63,11 +64,11 @@ export const MapSelect = ({
     } else {
       // 定位获取当前位置
       getLocationBase().then(res => {
-        mapChange({center: [res.longitude,res.latitude]})
+        mapChange({ center: [res.longitude, res.latitude] })
         setCenter([res.longitude, res.latitude])
         setLocation({ city: '', longitude: res.longitude, latitude: res.latitude })
       }).catch(err => {
-        console.log('获取当前位置失败',err)
+        console.log('获取当前位置失败', err)
       })
     }
   }, [value?.location, value?.longitude])

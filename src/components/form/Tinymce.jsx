@@ -1,3 +1,4 @@
+import React from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 
 // TinyMCE so the global var exists
