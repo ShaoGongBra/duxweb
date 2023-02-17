@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,body {
+  overflow: hidden;
+}
+
+.apexcharts-tooltip.apexcharts-theme-inverse {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+
+.apexcharts-tooltip.apexcharts-theme-inverse .apexcharts-tooltip-title {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.apexcharts-xaxistooltip.apexcharts-theme-inverse,
+.apexcharts-yaxistooltip.apexcharts-theme-inverse {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+}
+
+.apexcharts-xaxistooltip-bottom.apexcharts-theme-inverse:after,
+.apexcharts-xaxistooltip-bottom.apexcharts-theme-inverse:before {
+  border-bottom-color: rgba(0, 0, 0, 0.6);
+}
+
+.apexcharts-xaxistooltip-top.apexcharts-theme-inverse:after,
+.apexcharts-xaxistooltip-top.apexcharts-theme-inverse:before {
+  border-top-color: rgba(0, 0, 0, 0.6);
+}
+
+.apexcharts-yaxistooltip-left.apexcharts-theme-inverse:after,
+.apexcharts-yaxistooltip-left.apexcharts-theme-inverse:before {
+  border-left-color: rgba(0, 0, 0, 0.6);
+}
+
+.apexcharts-yaxistooltip-right.apexcharts-theme-inverse:after,
+.apexcharts-yaxistooltip-right.apexcharts-theme-inverse:before {
+  border-right-color: rgba(0, 0, 0, 0.6);
+}
+
+.apexcharts-theme-inverse .apexcharts-toolbar svg {
+  fill: rgba(255, 255, 255, 0.8);
+}
+
+.apexcharts-theme-inverse .apexcharts-menu {
+  background: rgba(255, 255, 255, 0.8);
+  min-width: 100px;
+  text-align: left;
+}
+
+.apexcharts-theme-inverse .apexcharts-menu .apexcharts-menu-item:hover {
+  background: rgba(255, 255, 255, 1);
+}

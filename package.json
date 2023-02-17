@@ -1,0 +1,40 @@
+{
+  "name": "duxweb",
+  "version": "1.0.0",
+  "description": "DUX Web端框架",
+  "main": "./src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@arco-design/web-react": "^2.43.0",
+    "@arco-themes/react-duxweb": "^0.0.15",
+    "@ckeditor/ckeditor5-build-classic": "^35.4.0",
+    "@ckeditor/ckeditor5-react": "^5.0.6",
+    "@iconify/json": "^2.1.150",
+    "@tinymce/tinymce-react": "^4.3.0",
+    "@uiw/react-amap": "^4.5.0",
+    "apexcharts": "^3.36.3",
+    "moment": "^2.29.4",
+    "overlayscrollbars": "^2.1.0",
+    "overlayscrollbars-react": "^0.5.0",
+    "qs": "^6.11.0",
+    "react-apexcharts": "^1.4.0",
+    "react-draggable": "^4.4.5",
+    "react-sortable-hoc": "^2.0.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "tinymce": "^6.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

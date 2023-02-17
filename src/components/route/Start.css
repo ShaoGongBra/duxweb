@@ -1,0 +1,78 @@
+.t-default-menu .t-menu__logo:not(:empty) {
+  border-bottom: none;
+}
+.route-modal .arco-modal-content {
+  padding: 0;
+}
+
+.arco-table-pagination {
+  padding: 12px;
+  padding-top: 0;
+}
+.arco-table-th-item {
+  padding: 12px 20px;
+}
+
+.card-checkbox-group {
+  display: block;
+}
+
+.card-checkbox-group .arco-checkbox {
+  margin: 0;
+  padding: 0;
+}
+
+.card-checkbox-group .arco-radio {
+  margin: 0;
+  padding: 0;
+}
+
+input[type="checkbox"]:focus-visible + .arco-tag {
+  box-shadow: 0 0 0 2px var(--color-primary-light-3);
+}
+
+input[type="checkbox"]:focus-visible + .card-checkbox-card {
+  box-shadow: 0 0 0 2px var(--color-primary-light-3);
+}
+
+.card-checkbox-card {
+  padding: 10px 16px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.card-checkbox-icon {
+}
+
+.card-checkbox-card-mask-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.card-checkbox-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.card-checkbox-card:hover,
+.card-checkbox-card-checked {
+  border-color: rgb(var(--primary-6));
+}
+
+.card-checkbox-card-checked {
+  background-color: var(--color-primary-light-1);
+}
+
+.card-checkbox-card:hover .card-checkbox-title,
+.card-checkbox-card-checked .card-checkbox-title,
+.card-checkbox-card:hover .card-checkbox-icon,
+.card-checkbox-card-checked .card-checkbox-icon {
+  color: rgb(var(--primary-6));
+}
+
+.ck-editor__editable_inline {
+  min-height: 500px;
+}
