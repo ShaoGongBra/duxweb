@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {Select as ArcoSelect, Message, Spin, Avatar} from '@arco-design/web-react'
-import {request} from '../../utils'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Select as ArcoSelect, Message, Spin, Avatar } from '@arco-design/web-react'
+import { request } from '../../utils'
 
 
 function formatData(list, fieldNames) {
@@ -8,7 +8,7 @@ function formatData(list, fieldNames) {
     let label = fieldNames?.label
     if (typeof label === 'function') {
       label = label(item)
-    }else {
+    } else {
       label = item[fieldNames?.label || 'label']
     }
     return {
@@ -42,7 +42,7 @@ export function UrlSelect(config) {
 
 
 export function UrlSearchSelect(config) {
-  const [options, setOptions] = useState()
+  const [options, setOptions] = useState([])
   const [fetching, setFetching] = useState(false)
   const getData = useCallback((inputValue, _, data) => {
     request({
@@ -64,12 +64,45 @@ export function UrlSearchSelect(config) {
   }, [])
 
   useEffect(() => {
+    setTimeout(() => {
+      // 等待编辑模式判断之后再获取默认列表
+      if (!currentValue.current.edit) {
+        getData()
+      }
+    }, 600)
+  }, [getData])
+
+  useEffect(() => {
     setOptions(formatData(config.options, config?.fieldNames))
   }, [config.options])
+
+  const clear = useCallback(() => {
+    getData()
+  }, [])
+
+  const currentValue = useRef({
+    edit: false,
+    value: null
+  })
+  const change = useCallback(value => {
+    currentValue.current.value = value
+    config.onChange?.(value)
+  }, [config.onChange])
+
+  useEffect(() => {
+    // 判断是不是编辑模式 编辑模式第一次获取数据
+    if (config.value && config.value !== currentValue.current.value) {
+      currentValue.current.value = config.value
+      currentValue.current.edit = true
+      getData('', null, { [config.valueField || 'key']: config.value })
+    }
+  }, [config.value])
 
   return (
     <ArcoSelect
       {...config}
+      onClear={clear}
+      onChange={change}
       allowClear
       showSearch
       filterOption={false}
@@ -85,7 +118,7 @@ export function UrlSearchSelect(config) {
               justifyContent: 'center',
             }}
           >
-            <Spin style={{margin: 12}}/>
+            <Spin style={{ margin: 12 }} />
           </div>
         ) : null
       }
