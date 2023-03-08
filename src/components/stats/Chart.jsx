@@ -50,19 +50,19 @@ export function StatsChart({
   })
 
 
-  if (chart == 'line') {
+  if (chart === 'line') {
     carts.line()
   }
-  if (chart == 'column') {
+  if (chart === 'column') {
     carts.column(false)
   }
-  if (chart == 'area') {
+  if (chart === 'area') {
     carts.area()
   }
-  if (chart == 'ring') {
+  if (chart === 'ring') {
     carts.ring()
   }
-  if (chart == 'radial') {
+  if (chart === 'radial') {
     carts.radial().setHeight(+height + 45)
   }
 

@@ -76,13 +76,13 @@ export function StatsCard({
       _cart.setData(item['name'], item['data'], item['format'])
     })
 
-    if (chart == 'line') {
+    if (chart === 'line') {
       _cart.line()
     }
-    if (chart == 'column') {
+    if (chart === 'column') {
       _cart.column(false)
     }
-    if (chart == 'area') {
+    if (chart === 'area') {
       _cart.area()
     }
 
