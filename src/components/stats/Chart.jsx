@@ -1,78 +1,88 @@
-import { useCharts } from '../charts/Charts'
-import React, {useEffect, useState} from 'react'
-import { DatePicker } from '@arco-design/web-react'
-import {request} from "../../utils";
-const { RangePicker } = DatePicker
+import {useCharts} from '../charts/Charts'
+import React, {useEffect, useMemo, useState} from 'react'
+import {DatePicker} from '@arco-design/web-react'
+import {deepCopy, request} from "../../utils"
+
+const {RangePicker} = DatePicker
 
 export function StatsChart({
-  card,
-  title = '',
-  subtitle = '',
-  date = [],
-  height = 200,
-  chart = 'line',
-  legend = false,
-  url = '', // 预留url数据
-  data = []
-}) {
+                             card,
+                             title = '',
+                             subtitle = '',
+                             date = [],
+                             dateFormat = 'YYYY-MM-DD',
+                             height = 200,
+                             chart = 'line',
+                             legend = false,
+                             url
+                           }) {
 
   const [chartData, setChartData] = useState([])
+  const [chartDate, setChatDate] = useState(date)
+
+  const getData = () => {
+    if (!url) {
+      return
+    }
+    request({
+      url: url,
+      data: {
+        start_date: chartDate[0],
+        stop_date: chartDate[1],
+      }
+    }).then(res => {
+      setChartData(res?.list || [])
+    })
+  }
 
   useEffect(() => {
-    if (url) {
-      request({
-        url: url,
-      }).then(res => {
-        setChartData(res?.list || [])
-      })
-    }else {
-      setChartData(data)
+    getData()
+  }, [url, chartDate])
+
+  const _cart = useCharts()
+
+  const [cart] = useMemo(() => {
+    _cart
+      .setHeight(height)
+      .setLegend(legend, 'right', 'top')
+    // .setData(
+    //   '测试33',
+    //   [
+    //     {
+    //       label: '2022-12-01',
+    //       value: 10
+    //     }
+    //   ],
+    //   'YYYY-MM-DD'
+    // )
+
+    chartData.forEach(item => {
+      _cart.setData(item['name'], deepCopy(item['data']), dateFormat)
+    })
+
+
+    if (chart === 'line') {
+      _cart.line()
+    }
+    if (chart === 'column') {
+      _cart.column(false)
+    }
+    if (chart === 'area') {
+      _cart.area()
+    }
+    if (chart === 'ring') {
+      _cart.ring()
+    }
+    if (chart === 'radial') {
+      _cart.radial().setHeight(+height + 45)
     }
 
-  }, [url, data])
+    if (chartDate.length) {
+      _cart.setDate(chartDate[0], chartDate[1], dateFormat)
+    }
 
-  const carts = useCharts()
-    .setHeight(height)
-    .setLegend(legend, 'right', 'top')
-    /*.setData(
-      '测试',
-      [
-        {
-          label: '2022-12-01',
-          value: 10
-        }
-      ],
-      'YYYY-MM-DD'
-    )*/
-
-  chartData.forEach(item => {
-    carts.setData(item['name'], item['data'], item['format'])
-  })
-
-
-  if (chart === 'line') {
-    carts.line()
-  }
-  if (chart === 'column') {
-    carts.column(false)
-  }
-  if (chart === 'area') {
-    carts.area()
-  }
-  if (chart === 'ring') {
-    carts.ring()
-  }
-  if (chart === 'radial') {
-    carts.radial().setHeight(+height + 45)
-  }
-
-  if (date.length) {
-    carts.setDate(date[0], date[1], 'YYYY-MM-DD')
-  }
-
-  function onSelect(value, context) {
-    console.log('onChange:', value, context)
-  }
+    return [_cart.render()]
+  }, [chartData])
 
   return (
     <div className={`p-4 rounded shadow-sm border border-color-2 bg-color-1 text-color-1`}>
@@ -81,9 +91,11 @@ export function StatsChart({
           <div className='text-color-1 text-title-1 font-bold'>{title}</div>
           <div className='text-color-2'>{subtitle}</div>
         </div>
-        <div>{date.length ? <RangePicker className='flex' mode='date' value={date} onChange={onSelect} /> : ''}</div>
+        <div>{date.length ? <RangePicker className='flex' mode='date' value={chartDate} onChange={(value) => {
+          setChatDate(value)
+        }}/> : ''}</div>
       </div>
-      {carts.render()}
+      {cart}
     </div>
   )
 }

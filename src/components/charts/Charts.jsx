@@ -1,7 +1,7 @@
 import moment from 'moment'
-import React, { useMemo } from 'react'
+import React from 'react'
 import Chart from 'react-apexcharts'
-import { useThemeDark } from '../../utils'
+import {useThemeDark} from '../../utils'
 
 window.Apex = {
   chart: {
@@ -112,7 +112,7 @@ export default class Charts {
 
   /**
    * 设置高度
-   * @param {string} s
+   * @param {number} s
    * @returns {Charts}
    */
   setHeight(s) {
@@ -515,7 +515,7 @@ export default class Charts {
 
     this.callback && this.callback()
 
-    return <Chart options={this.option} series={this.series} type={this.mode} height={this.height} width={this.width} />
+    return <Chart options={this.option} series={this.series} type={this.mode} height={this.height} width={this.width}/>
   }
 
   /**
@@ -563,7 +563,7 @@ export default class Charts {
       })
       let data = []
       labels.forEach(label => {
-        data.push(group[label])
+        data.push(group[label] || 0)
       })
       this.series.push({
         name: datum.name,
@@ -579,14 +579,11 @@ export default class Charts {
    * @returns
    */
   getSeriesData(key) {
-    return this.series[key].data
+    return this.series[key]?.data
   }
 }
 
 export const useCharts = (theme = 'default') => {
   const [dark] = useThemeDark()
-  const chart = useMemo(() => {
-    return new Charts('custom').setTheme(theme !== 'default' ? 'inverse' : dark ? 'dark' : 'light')
-  }, [theme, dark])
-  return chart
+  return new Charts('custom').setTheme(theme !== 'default' ? 'inverse' : dark ? 'dark' : 'light')
 }
