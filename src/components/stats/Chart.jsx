@@ -39,6 +39,7 @@ export function StatsChart({
     getData()
   }, [url, chartDate])
 
+
   const _cart = useCharts()
 
   const [cart] = useMemo(() => {
@@ -77,7 +78,7 @@ export function StatsChart({
       _cart.radial().setHeight(+height + 45)
     }
 
-    if (chartDate.length) {
+    if (date.length) {
       _cart.setDate(chartDate[0], chartDate[1], dateFormat)
     }
 

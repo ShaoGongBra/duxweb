@@ -56,7 +56,7 @@ window.Apex = {
 
 export default class Charts {
   mode = '' // 模式
-  way = 'day' // 数据类型
+  way = 'custom' // 数据类型
   height = 200 // 高度
   width = '100%' // 宽度
   legend = {
@@ -90,14 +90,7 @@ export default class Charts {
 
   theme = 'auto'
 
-  dateUnit = ['years', 'months', 'weeks', 'days', 'hours', 'minutes']
-
-  constructor(way) {
-    if (!this.dateUnit.includes(way)) {
-      this.way = 'custom'
-    } else {
-      this.way = way
-    }
+  constructor() {
   }
 
   /**
@@ -112,7 +105,7 @@ export default class Charts {
 
   /**
    * 设置高度
-   * @param {number} s
+   * @param {string} s
    * @returns {Charts}
    */
   setHeight(s) {
@@ -205,15 +198,22 @@ export default class Charts {
   }
 
   /**
-   * 设置数据
+   * 设置时间数据
    * @param {string} start 开始时间
    * @param {string} stop 结束时间
    * @param {string} format 时间格式
+   * @param {string} way 分割单位
    * @returns {Charts}
    */
-  setDate(start, stop, format) {
+  setDate(start, stop, format, way = 'days') {
     this.date.start = start
     this.date.stop = stop
+    let dateUnit = ['years', 'months', 'weeks', 'days', 'hours', 'minutes']
+    if (dateUnit.includes(way)) {
+      this.way = way
+    } else {
+      this.way = 'days'
+    }
     if (format) {
       this.date.format = format
     }
@@ -532,18 +532,22 @@ export default class Charts {
       // HH:mm
       let start = moment(this.date.start, this.date.format)
       let stop = moment(this.date.stop, this.date.format)
-      let diff = start.diff(stop, this.way)
-      for (let i = 0; i < diff; i++) {
+      let diff = stop.diff(start, this.way)
+
+      for (let i = 0; i <= diff; i++) {
         labels.push(moment(this.date.start, this.date.format).add(i, this.way).format(this.date.format))
       }
     } else {
       this.data.forEach(datum => {
         datum.data.forEach(item => {
-          labels.push(item.label)
+          if (!labels.includes(item.label)) {
+            labels.push(item.label)
+          }
         })
       })
     }
     this.labels = labels
+
     // 处理数据
     this.data.forEach(datum => {
       let group = {}
@@ -585,5 +589,6 @@ export default class Charts {
 
 export const useCharts = (theme = 'default') => {
   const [dark] = useThemeDark()
-  return new Charts('custom').setTheme(theme !== 'default' ? 'inverse' : dark ? 'dark' : 'light')
+  return new Charts().setTheme(theme !== 'default' ? 'inverse' : dark ? 'dark' : 'light')
+  return chart
 }

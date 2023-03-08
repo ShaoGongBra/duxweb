@@ -9,7 +9,6 @@ export function StatsCard({
                             desc = '',
                             unit = '',
                             chart = 'line',
-                            dateFormat = 'YYYY-MM-DD',
                             url
                           }) {
   const themeColor = useMemo(() => {
@@ -72,7 +71,7 @@ export function StatsCard({
     )*/
 
     chartData.forEach(item => {
-      _cart.setData(item['name'], item['data'], dateFormat)
+      _cart.setData(item['name'], item['data'])
     })
 
     if (chart === 'line') {
