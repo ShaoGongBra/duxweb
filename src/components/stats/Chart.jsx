@@ -1,6 +1,7 @@
 import { useCharts } from '../charts/Charts'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { DatePicker } from '@arco-design/web-react'
+import {request} from "../../utils";
 const { RangePicker } = DatePicker
 
 export function StatsChart({
@@ -10,12 +11,30 @@ export function StatsChart({
   date = [],
   height = 200,
   chart = 'line',
-  legend = false
+  legend = false,
+  url = '', // 预留url数据
+  data = []
 }) {
+
+  const [chartData, setChartData] = useState([])
+
+  useEffect(() => {
+    if (url) {
+      request({
+        url: url,
+      }).then(res => {
+        setChartData(res?.list || [])
+      })
+    }else {
+      setChartData(data)
+    }
+
+  }, [url, data])
+
   const carts = useCharts()
     .setHeight(height)
     .setLegend(legend, 'right', 'top')
-    .setData(
+    /*.setData(
       '测试',
       [
         {
@@ -24,7 +43,12 @@ export function StatsChart({
         }
       ],
       'YYYY-MM-DD'
-    )
+    )*/
+
+  chartData.forEach(item => {
+    carts.setData(item['name'], item['data'], item['format'])
+  })
+
 
   if (chart == 'line') {
     carts.line()

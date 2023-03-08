@@ -1,7 +1,8 @@
 
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { IconArrowUp, IconArrowDown } from '@arco-design/web-react/icon'
 import { useCharts } from '../charts/Charts'
+import {request} from "../../utils";
 
 export function StatsCard({
   theme = 'default',
@@ -31,6 +32,20 @@ export function StatsCard({
     return _themeColor
   }, [theme])
 
+  const [chartData, setChartData] = useState([])
+  useEffect(() => {
+    if (url) {
+      request({
+        url: url,
+      }).then(res => {
+        setChartData(res?.list || [])
+      })
+    }else {
+      setChartData(data)
+    }
+
+  }, [url, data])
+
   const _chart = useCharts(theme)
 
   const [cart, cur] = useMemo(() => {
@@ -38,8 +53,7 @@ export function StatsCard({
       .setMini(true)
       .setHeight(50)
       .setWidth(100)
-      .setDate('2022-12-01', '2022-12-10', 'YYYY-MM-DD')
-      .setData(
+      /*.setData(
         '测试',
         [
           {
@@ -56,14 +70,17 @@ export function StatsCard({
           }
         ],
         'YYYY-MM-DD'
-      )
-      .formatData()
+      )*/
+
+    chartData.forEach(item => {
+      _cart.setData(item['name'], item['data'], item['format'])
+    })
 
     if (chart == 'line') {
       _cart.line()
     }
     if (chart == 'column') {
-      _cart.column()
+      _cart.column(false)
     }
     if (chart == 'area') {
       _cart.area()
