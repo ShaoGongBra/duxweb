@@ -9,6 +9,7 @@ export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, clas
   const [size, sizeType] = useDocSize()
   const [form] = ArcoForm.useForm()
   const [disabled, setDisabled] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState({})
 
   useEffect(() => {
@@ -59,8 +60,10 @@ export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, clas
         <Button
           type='primary'
           disabled={disabled}
+          loading={loading}
           onClick={() => {
             form.validate().then(res => {
+              setLoading(true)
               request({
                 url: url,
                 method: 'POST',
@@ -79,6 +82,7 @@ export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, clas
               })
                 .then(res => {
                   onSubmit?.(res)
+                  setLoading(false)
                   route.closeModal(true)
                 })
                 .catch(res => {
@@ -92,7 +96,8 @@ export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, clas
                         }
                       }
                     }
-                    form.setFields($fields);
+                    form.setFields($fields)
+                    setLoading(false)
                   }
                 })
             })
@@ -109,11 +114,16 @@ export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, clas
 export function PageForm({ url, infoUrl, onSubmit, title, children }) {
   const [form] = ArcoForm.useForm()
   const [disabled, setDisabled] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState({})
 
   const defaultValue = useRef({})
 
   useEffect(() => {
+    if (infoUrl === false) {
+      setDisabled(false)
+      return
+    }
     request({
       url: infoUrl || url,
       method: 'GET'
@@ -145,9 +155,10 @@ export function PageForm({ url, infoUrl, onSubmit, title, children }) {
               <Button
                 type='primary'
                 disabled={disabled}
+                loading={loading}
                 onClick={() => {
                   form.validate().then(res => {
-                    setDisabled(true)
+                    setLoading(true)
                     request({
                       url: url,
                       method: 'POST',
@@ -165,6 +176,7 @@ export function PageForm({ url, infoUrl, onSubmit, title, children }) {
                     })
                       .then(res => {
                         onSubmit?.(res)
+                        setLoading(false)
                         route.closeModal(true)
                       })
                       .catch(res => {
@@ -181,8 +193,8 @@ export function PageForm({ url, infoUrl, onSubmit, title, children }) {
                           form.setFields($fields);
                         }
                       }).finally(() => {
-                        setDisabled(false)
-                      })
+                      setLoading(false)
+                    })
                   })
                 }}
               >
