@@ -54,7 +54,7 @@ export function StatsChart({
     carts.line()
   }
   if (chart == 'column') {
-    carts.column()
+    carts.column(false)
   }
   if (chart == 'area') {
     carts.area()
