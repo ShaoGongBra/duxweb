@@ -360,6 +360,7 @@ export default class Charts {
       this.option.legend.markers = {
         offsetY: 1.5
       }
+
       this.option.plotOptions = {
         radialBar: {
           hollow: {
@@ -381,6 +382,8 @@ export default class Charts {
           }
         }
       }
+
+      this.option.labels = this.labels
     }
     return this
   }
@@ -514,6 +517,10 @@ export default class Charts {
     }
 
     this.callback && this.callback()
+
+    if (this.mode == 'radialBar') {
+      console.log(this.option, this.series)
+    }
 
     return <Chart options={this.option} series={this.series} type={this.mode} height={this.height} width={this.width}/>
   }

@@ -9,6 +9,9 @@ export function StatsCard({
                             desc = '',
                             unit = '',
                             chart = 'line',
+                            date = [],
+                            dateFormat = 'YYYY-MM-DD',
+                            dateWay = 'days',
                             url
                           }) {
   const themeColor = useMemo(() => {
@@ -71,7 +74,7 @@ export function StatsCard({
     )*/
 
     chartData.forEach(item => {
-      _cart.setData(item['name'], item['data'])
+      _cart.setData(item['name'], item['data'], dateFormat)
     })
 
     if (chart === 'line') {
@@ -84,24 +87,35 @@ export function StatsCard({
       _cart.area()
     }
 
+    if (date.length) {
+      _cart.setDate(date[0], date[1], dateFormat, dateWay)
+    }
+
     _cart.formatData()
 
     let cartData = _cart.getSeriesData(0)?.slice(-2) || []
-    let curValue = cartData[1] ?? 0
-    let contrastValue = cartData[0] ?? 0
-    let rate = ~~((curValue / contrastValue) * 100).toFixed(2)
+    let curValue = cartData[cartData.length - 1] ?? 0
+    let contrastValue = cartData[cartData.length - 2] ?? 0
+
+    let rate = 0;
+    if (contrastValue) {
+      rate = (((curValue - contrastValue) / contrastValue) * 100).toFixed(2)
+    } else if (curValue) {
+      rate = 100
+    }
+
 
     let footerColor
     let footerIcon
-    if (curValue > contrastValue) {
+    if (rate < 0) {
       footerColor = 'text-error'
-      footerIcon = <IconArrowUp className='w-3 h-3'/>
-    }
-    if (curValue < contrastValue) {
-      footerColor = 'text-success'
       footerIcon = <IconArrowDown className='w-3 h-3'/>
     }
-    if (curValue == contrastValue) {
+    if (rate > 0) {
+      footerColor = 'text-success'
+      footerIcon = <IconArrowUp className='w-3 h-3'/>
+    }
+    if (rate === 0) {
       footerColor = 'text-primary'
       footerIcon = <div></div>
     }
