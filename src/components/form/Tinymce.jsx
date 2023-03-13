@@ -54,6 +54,8 @@ import contentCss from 'tinymce/skins/content/default/content.min.css?raw'
 // eslint-disable-next-line import/no-unresolved
 import contentUiCss from 'tinymce/skins/ui/oxide/content.min.css?raw'
 
+import { upload } from '../../utils/request'
+
 // 语言包
 import './tinymce.zh-cn'
 

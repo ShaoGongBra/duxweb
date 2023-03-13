@@ -141,6 +141,7 @@ const uploadTempFile = (files, option = {}) => {
         allSize.push([file.size || 0, 0])
 
         const params = {
+          timeout: 600000,
           ...requestParams,
           file,
           name: option.requestField || uploadConfig.requestField
