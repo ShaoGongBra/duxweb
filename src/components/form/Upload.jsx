@@ -162,6 +162,7 @@ export function UploadFiles({
   value,
   onChange,
   children,
+  accept,
   max = 9
 }) {
 
@@ -175,6 +176,7 @@ export function UploadFiles({
 
   const uploadFile = ({ multiple } = {}) => {
     return upload({
+      accept,
       multiple: multiple ?? max > 1,
       getInfo: true
     })
@@ -270,11 +272,10 @@ export function UploadFiles({
   </div>
 }
 
-
-
 export function UploadFile({
   value = {},
   onChange,
+  accept,
   children,
 }) {
 
@@ -288,6 +289,7 @@ export function UploadFile({
 
   const uploadFile = ({ multiple } = {}) => {
     return upload({
+      accept,
       multiple: false,
       getInfo: true
     })
@@ -324,7 +326,7 @@ export function UploadFile({
                   percent={progress}
                   status='success'
                 /> : <>
-                  {value.url ? <>
+                  {value?.url ? <>
                     <div className='text-center'>
                       <div className='text-title-1'>{value.name}</div>
                       <div className='text-color-3'>{getFilesize(value.size)}</div>
@@ -351,4 +353,114 @@ export function UploadFile({
           </>
     }
   </div>
+}
+
+export function UploadVedios({
+  value,
+  onChange,
+  capture,
+  children,
+  width,
+  height,
+  mode,
+  quality,
+  logo,
+  logoPosition,
+  max = 9,
+  size= [20,20], // 展示大小
+}) {
+
+  useEffect(() => {
+    if (!value) {
+      onChange?.([])
+    }
+  }, [onChange, value])
+
+  const [progress, setProgress] = useState(0)
+
+  const uploadFile = ({ multiple } = {}) => {
+    return upload({
+      capture,
+      accept:'video/*',
+      multiple: multiple ?? max > 1,
+      width,
+      height,
+      mode,
+      quality,
+      logo,
+      logoPosition,
+    })
+  }
+
+  const del = index => {
+    value.splice(index, 1)
+    onChange?.([...value])
+  }
+
+  const add = index => {
+    uploadFile({ multiple: false }).progress(res => {
+      let num = Math.trunc(res * 100)
+      setProgress(num)
+    }).start(() => {
+      setProgress(1)
+    }).then(res => {
+      if (index > -1) {
+        value.splice(index, 1, res[0])
+      } else {
+        value = [...value, ...res]
+      }
+      onChange?.([...value])
+      setProgress(0)
+    })
+  }
+
+  return <div className='flex flex-wrap gap-2'>
+  {
+    typeof children === 'function'
+      ? children(value)
+      : children
+        ? children
+        : <>
+          {
+            value?.map?.((img, i) => (
+              <div key={i} className={`bg-gray-2 border border-color-2 rounded-sm w-full lg:w-${size[0]} h-${size[1]} text-center relative overflow-hidden`}>
+                <video src={img} className='w-full h-full' ></video>
+                {!progress && <div className='arco-upload-list-item-picture-mask'>
+                  <div className=' flex items-center justify-center gap-2 w-full h-full'>
+                    <IconEdit onClick={() => add(i)} />
+                    <IconDelete onClick={() => del(i)} />
+                  </div>
+                </div>}
+                {(max === 1 && progress > 0 && progress < 100) && <ImageProgress rate={progress} />}
+              </div>
+            ))
+          }
+          {value?.length < max && <div className={`bg-gray-2 border border-color-3 hover:bg-gray-3 cursor-pointer rounded-sm border-dotted w-full lg:w-${size[0]} h-${size[1]} text-center relative`} onClick={() => {
+            !progress && add(-1)
+          }}>
+            <div className='arco-upload-trigger-picture-text'>
+              <IconPlus />
+            </div>
+            {(progress > 0 && progress < 100) && <ImageProgress rate={progress} />}
+          </div>}
+        </>
+  }
+</div>
+}
+
+
+export function UploadVedio({
+  value,
+  onChange,
+  children,
+  ...props
+}) {
+  const change = _value => {
+    onChange?.(_value[0] || '')
+  }
+  const val = useMemo(() => value ? [value] : [], [value])
+
+  return <UploadVedios {...props} onChange={change} max={1} value={val}>
+    {children}
+  </UploadVedios>
 }
