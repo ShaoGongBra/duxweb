@@ -29,6 +29,7 @@ export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, clas
         setData(res)
       })
       .catch(res => {
+        setDisabled(false)
         Message.error(res.message)
       })
   }, [form, infoUrl, url])
@@ -136,6 +137,7 @@ export function PageForm({ url, infoUrl, onSubmit, title, children }) {
       })
       .catch(res => {
         Message.error(res.message)
+        setDisabled(false)
       })
   }, [form, infoUrl, url])
 
