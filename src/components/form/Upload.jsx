@@ -39,6 +39,7 @@ export function UploadImages({
   logo,
   logoPosition,
   max = 9,
+  drive,
   size= [20,20], // 展示大小
 }) {
 
@@ -62,6 +63,7 @@ export function UploadImages({
       quality,
       logo,
       logoPosition,
+      drive
     })
   }
 
@@ -163,6 +165,7 @@ export function UploadFiles({
   onChange,
   children,
   accept,
+  drive,
   max = 9
 }) {
 
@@ -178,7 +181,8 @@ export function UploadFiles({
     return upload({
       accept,
       multiple: multiple ?? max > 1,
-      getInfo: true
+      getInfo: true,
+      drive
     })
   }
 
@@ -276,6 +280,7 @@ export function UploadFile({
   value = {},
   onChange,
   accept,
+  drive,
   children,
 }) {
 
@@ -291,7 +296,8 @@ export function UploadFile({
     return upload({
       accept,
       multiple: false,
-      getInfo: true
+      getInfo: true,
+      drive
     })
   }
 
@@ -367,6 +373,7 @@ export function UploadVedios({
   logo,
   logoPosition,
   max = 9,
+  drive,
   size= [20,20], // 展示大小
 }) {
 
@@ -389,6 +396,7 @@ export function UploadVedios({
       quality,
       logo,
       logoPosition,
+      drive
     })
   }
 

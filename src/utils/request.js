@@ -1,6 +1,7 @@
 import { createRequest, createUpload } from './net'
 import { System } from './system'
 import { user } from './user'
+import { qiniu } from './net/uploadDrive/qiniu'
 
 const mainConfigData = {
   config: {
@@ -46,8 +47,20 @@ const { request, throttleRequest, middle: requestMiddle, config: requestConfig }
   }
 })
 
+const qiniuDrive = qiniu()
+qiniuDrive.configSync(async () => {
+  const res = await request('tools/uploadQiniu')
+  return {
+    host: res.public_url,
+    token: res.token
+  }
+})
+
 const { upload, uploadTempFile, middle: uploadMiddle } = createUpload({
   ...mainConfigData,
+  drives: {
+    qiniu: qiniuDrive
+  },
   middle: {
     before: [
       async params => {
