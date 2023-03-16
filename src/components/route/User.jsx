@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, memo, useCallback, useState } from 'react'
 import { user } from '../../utils'
 
 export default memo(({ children, system }) => {
-  const { UserLogin, force, isLogin } = useMemo(() => {
-    return { ...user.getCurrentConfig(system), isLogin: user.isLogin() }
+  const { UserLogin, loginConfig, force, isLogin } = useMemo(() => {
+    return { loginConfig: {}, ...user.getCurrentConfig(system), isLogin: user.isLogin() }
   }, [system])
 
   const [showLogin, setShowLogin] = useState(!isLogin)
@@ -27,12 +27,12 @@ export default memo(({ children, system }) => {
   return (
     <>
       {force ? (
-        <>{showLogin ? <UserLogin onLogin={login} /> : children}</>
+        <>{showLogin ? <UserLogin {...loginConfig} onLogin={login} /> : children}</>
       ) : (
         <>
           {children}
           <div>
-            <UserLogin onLogin={login} />
+            <UserLogin {...loginConfig} onLogin={login} />
           </div>
         </>
       )}
