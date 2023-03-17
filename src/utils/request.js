@@ -16,7 +16,9 @@ const mainConfigData = {
     upload: {
       api: 'tools/upload',
       requestField: 'file',
-      resultField: ['data', 'data', 'list', 0, 'url']
+      resultField: ['data', 'data', 'list', 0, 'url'],
+      // 第三方默认上传驱动，为空使用本地上传
+      defaultDrive: ''
     }
   },
 

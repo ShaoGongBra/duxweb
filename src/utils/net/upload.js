@@ -97,11 +97,13 @@ const upload = option => {
 }
 
 const uploadTempFile = (files, option = {}) => {
+  // 合成配置
+  const { request: requestConfig, upload: uploadConfig, result: resultConfig } = option.config || {}
   // 使用驱动上传
-  if (option.drive && option.drives[option.drive]) {
+  if (option.uploadType === 'drive' && uploadConfig.defaultDrive && option.drives[uploadConfig.defaultDrive]) {
     let startFunc
     let progressFunc
-    const drive = option.drives[option.drive]
+    const drive = option.drives[uploadConfig.defaultDrive]
     const uploadPromise = new Promise((resolve, reject) => {
       setTimeout(() => {
         const allSize = []
@@ -146,8 +148,6 @@ const uploadTempFile = (files, option = {}) => {
     return uploadPromise
   } else {
     // 使用本地上传
-    // 合成配置
-    const { request: requestConfig, upload: uploadConfig, result: resultConfig } = option.config || {}
 
     // 进度通知
     const progress = (i, size) => {
@@ -289,6 +289,7 @@ export const createUpload = (() => {
       }
     }
   }
+
   return config => {
     const middle = {
       before: [],

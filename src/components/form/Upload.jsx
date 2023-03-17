@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect , useCallback } from 'react'
+import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { Progress, Image, Button, Table, Link } from '@arco-design/web-react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { upload } from '../../utils'
@@ -39,8 +39,8 @@ export function UploadImages({
   logo,
   logoPosition,
   max = 9,
-  drive,
-  size= [20,20], // 展示大小
+  uploadType,
+  size = [20, 20], // 展示大小
 }) {
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export function UploadImages({
       quality,
       logo,
       logoPosition,
-      drive
+      uploadType
     })
   }
 
@@ -165,7 +165,7 @@ export function UploadFiles({
   onChange,
   children,
   accept,
-  drive,
+  uploadType,
   max = 9
 }) {
 
@@ -182,7 +182,7 @@ export function UploadFiles({
       accept,
       multiple: multiple ?? max > 1,
       getInfo: true,
-      drive
+      uploadType
     })
   }
 
@@ -261,7 +261,7 @@ export function UploadFiles({
           ? children
           : <>
             <div>
-              <Button type='primary' icon={progress ?  <Progress
+              <Button type='primary' icon={progress ? <Progress
                 size='mini'
                 percent={progress}
               /> : <IconUpload />} onClick={add}>
@@ -280,7 +280,7 @@ export function UploadFile({
   value = {},
   onChange,
   accept,
-  drive,
+  uploadType,
   children,
 }) {
 
@@ -297,7 +297,7 @@ export function UploadFile({
       accept,
       multiple: false,
       getInfo: true,
-      drive
+      uploadType
     })
   }
 
@@ -345,7 +345,7 @@ export function UploadFile({
                         删除
                       </Button>
                     </div>
-                  </>: <>
+                  </> : <>
                     <div className='text-center'>
                       <div className='text-color-3'>暂无上传文件</div>
                     </div>
@@ -373,8 +373,8 @@ export function UploadVedios({
   logo,
   logoPosition,
   max = 9,
-  drive,
-  size= [20,20], // 展示大小
+  uploadType,
+  size = [20, 20], // 展示大小
 }) {
 
   useEffect(() => {
@@ -388,7 +388,7 @@ export function UploadVedios({
   const uploadFile = ({ multiple } = {}) => {
     return upload({
       capture,
-      accept:'video/*',
+      accept: 'video/*',
       multiple: multiple ?? max > 1,
       width,
       height,
@@ -396,7 +396,7 @@ export function UploadVedios({
       quality,
       logo,
       logoPosition,
-      drive
+      uploadType
     })
   }
 
@@ -423,37 +423,37 @@ export function UploadVedios({
   }
 
   return <div className='flex flex-wrap gap-2'>
-  {
-    typeof children === 'function'
-      ? children(value)
-      : children
-        ? children
-        : <>
-          {
-            value?.map?.((img, i) => (
-              <div key={i} className={`bg-gray-2 border border-color-2 rounded-sm w-full lg:w-${size[0]} h-${size[1]} text-center relative overflow-hidden`}>
-                <video src={img} className='w-full h-full' ></video>
-                {!progress && <div className='arco-upload-list-item-picture-mask'>
-                  <div className=' flex items-center justify-center gap-2 w-full h-full'>
-                    <IconEdit onClick={() => add(i)} />
-                    <IconDelete onClick={() => del(i)} />
-                  </div>
-                </div>}
-                {(max === 1 && progress > 0 && progress < 100) && <ImageProgress rate={progress} />}
+    {
+      typeof children === 'function'
+        ? children(value)
+        : children
+          ? children
+          : <>
+            {
+              value?.map?.((img, i) => (
+                <div key={i} className={`bg-gray-2 border border-color-2 rounded-sm w-full lg:w-${size[0]} h-${size[1]} text-center relative overflow-hidden`}>
+                  <video src={img} className='w-full h-full' ></video>
+                  {!progress && <div className='arco-upload-list-item-picture-mask'>
+                    <div className=' flex items-center justify-center gap-2 w-full h-full'>
+                      <IconEdit onClick={() => add(i)} />
+                      <IconDelete onClick={() => del(i)} />
+                    </div>
+                  </div>}
+                  {(max === 1 && progress > 0 && progress < 100) && <ImageProgress rate={progress} />}
+                </div>
+              ))
+            }
+            {value?.length < max && <div className={`bg-gray-2 border border-color-3 hover:bg-gray-3 cursor-pointer rounded-sm border-dotted w-full lg:w-${size[0]} h-${size[1]} text-center relative`} onClick={() => {
+              !progress && add(-1)
+            }}>
+              <div className='arco-upload-trigger-picture-text'>
+                <IconPlus />
               </div>
-            ))
-          }
-          {value?.length < max && <div className={`bg-gray-2 border border-color-3 hover:bg-gray-3 cursor-pointer rounded-sm border-dotted w-full lg:w-${size[0]} h-${size[1]} text-center relative`} onClick={() => {
-            !progress && add(-1)
-          }}>
-            <div className='arco-upload-trigger-picture-text'>
-              <IconPlus />
-            </div>
-            {(progress > 0 && progress < 100) && <ImageProgress rate={progress} />}
-          </div>}
-        </>
-  }
-</div>
+              {(progress > 0 && progress < 100) && <ImageProgress rate={progress} />}
+            </div>}
+          </>
+    }
+  </div>
 }
 
 
