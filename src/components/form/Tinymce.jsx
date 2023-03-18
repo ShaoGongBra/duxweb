@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 
 // TinyMCE so the global var exists
@@ -174,16 +174,22 @@ export const TinymceEditor = ({
 
   // const editorRef = useRef(null)
 
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    setTimeout(() => setShow(true), 300)
+  }, [])
+
   return (
     <>
-      <BaseEditor
+      {show && <BaseEditor
         // onInit={(evt, editor) => editorRef.current = editor}
+        // key={key}
         value={value}
         onEditorChange={onChange}
         disabled={disabled}
         // inline
         init={initData}
-      />
+      />}
     </>
   )
 }

@@ -188,7 +188,7 @@ const LayoutSide = memo(({children}) => {
                     <div
                       className={`flex items-center py-2 px-2 rounded hover:bg-gray-3 justify-between ${active[0] == appKey && 'text-primary'}`}
                       onClick={() => {
-                        if (app.url && !app.children?.length) {
+                        if (app.url) {
                           route.push(app.url)
                         } else {
                           app.expand = !app.expand
@@ -264,7 +264,7 @@ const LayoutSide = memo(({children}) => {
                         className={`cursor-pointer flex items-center justify-center flex-col gap-1 relative ${panel == appKey ? 'color-white' : ''}`}
                         onClick={e => {
                           stopPropagation(e)
-                          if (app.url && !app.children?.length) {
+                          if (app.url) {
                             route.push(app.url)
                           } else {
                             setExpands([appKey])
