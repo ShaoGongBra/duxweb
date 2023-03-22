@@ -43,7 +43,9 @@ const requestReact = async ({ url, data, header, timeout, ...option } = {}) => {
     return {
       statusCode: res.status,
       errMsg: res.statusText,
-      data: null,
+      data: {
+        message: '导出成功'
+      },
       header: {}
     }
   }
