@@ -80,14 +80,14 @@ const LayoutSide = memo(({children}) => {
       _data[1] = qs.parse(_data[1])
       const [path, query] = _data
       if (
-        path === currentState.path &&
+        path === currentState?.path &&
         Object.keys(currentState.params).every(key => currentState.params[key] == query[key])
       ) {
         return 10
       }
 
       const paths = path.split('/')
-      const currentPaths = currentState.path?.split('/') || []
+      const currentPaths = currentState?.path?.split('/') || []
       const index = currentPaths.findIndex((item, i) => item !== paths[i])
       return ~index ? index : currentPaths.length
     }
@@ -384,24 +384,6 @@ const LayoutSide = memo(({children}) => {
 })
 
 export default function Start() {
-
-  // const notify = (status) => {
-  //   if (!status) {
-  //     return
-  //   }
-  //   request({
-  //     url: 'notify'
-  //   }).then(res => {
-  //     console.log(res)
-  //     setTimeout(() => {
-  //       notify(status)
-  //     }, 5000)
-  //   })
-  // }
-
-  // useEffect(() => {
-  //   notify(true)
-  // }, [])
 
   return (
     <User>

@@ -33,6 +33,9 @@ class Notify {
         list?.map(callback => callback(res.params))
       }
     }).catch(err => {
+      if (!this.status) {
+        return
+      }
       console.error('通知请求错误 将在稍后重试', err)
       setTimeout(() => {
         this._notify()

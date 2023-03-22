@@ -2,7 +2,7 @@ import * as qs from 'qs'
 import { getUrl, execGetObject, execGetChild, execMiddle } from './util'
 import { asyncTimeOut } from '../util'
 
-const requestReact = async ({ url, data, header, timeout, ...option } = {}) => {
+const requestReact = async ({ url, data, header, timeout, onController, ...option } = {}) => {
   if (option.method === 'POST') {
     option.body = data
   }
@@ -11,6 +11,8 @@ const requestReact = async ({ url, data, header, timeout, ...option } = {}) => {
   // 用户终止请求
   const controller = new AbortController()
   option.signal = controller.signal
+
+  onController(controller)
 
   const race = [
     fetch(url, option),
@@ -130,7 +132,7 @@ const request = (() => {
     // 请求中间件
     const middle = params.middle || {}
 
-    let loadingClose, taroRequestTask
+    let controller
     // eslint-disable-next-line no-async-promise-executor
     const requestTask = new Promise(async (resolve, reject) => {
       if (middle.before?.length) {
@@ -140,16 +142,9 @@ const request = (() => {
           reject(error)
         }
       }
-      taroRequestTask = requestReact(requestParams)
+      const taroRequestTask = requestReact({ ...requestParams, onController: _controller => controller = _controller })
       if (!url) {
         reject({ message: '请求URL错误', code: resultConfig.errorCode })
-      }
-      if (typeof loading === 'function') {
-        loadingClose = loading()
-      } else if (loading) {
-        // Taro.showLoading({
-        //   title: typeof loading === 'string' ? loading : '加载中'
-        // })
       }
       if (middle.result?.length) {
         // 中间件处理返回数据
@@ -199,7 +194,7 @@ const request = (() => {
         err.url = url
         throw err
       })
-    requestTask.abort = () => taroRequestTask && taroRequestTask.abort()
+    requestTask.abort = () => controller?.abort?.()
     return requestTask
   }
 })()

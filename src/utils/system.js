@@ -24,6 +24,22 @@ export class System {
   }
 }
 
+/**
+ * 监听跳转到不同的端刷新页面
+ */
+(() => {
+  let prevCurrent = System.current
+  window.addEventListener('popstate', e => {
+    const current = location.hash.split('?')[0].split('/')[1]
+    if (prevCurrent !== current) {
+      prevCurrent = current
+      location.reload()
+    } else if (!e.state) {
+      location.reload()
+    }
+  })
+})();
+
 export const useSystem = () => {
   const [system, setSystem] = useState(System.current)
 

@@ -76,13 +76,10 @@ const { upload, uploadTempFile, middle: uploadMiddle } = createUpload({
     ]
   }
 })
-
-System.onChange(system => {
-  requestConfig({
-    request: {
-      path: system
-    }
-  })
+requestConfig({
+  request: {
+    path: System.current
+  }
 })
 
 export { request, throttleRequest, requestMiddle, requestConfig, upload, uploadTempFile, uploadMiddle }

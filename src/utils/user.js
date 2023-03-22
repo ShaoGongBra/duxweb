@@ -116,7 +116,8 @@ class UserManage extends ObjectManage {
   loginOut = async () => {
     delete this.data[System.current]
     this.setInfo({ ...this.data })
-    this.setLoginStatus(false)
+    // this.setLoginStatus(false)
+    location.reload()
   }
 
   // 登录状态监听 登录和退出登录都会监听
