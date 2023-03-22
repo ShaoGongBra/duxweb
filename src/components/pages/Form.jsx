@@ -87,6 +87,7 @@ export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, clas
                   route.closeModal(true)
                 })
                 .catch(res => {
+                  setLoading(false)
                   Message.error(res.message)
                   if (res.code === 422) {
                     let $fields = {};
@@ -98,7 +99,6 @@ export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, clas
                       }
                     }
                     form.setFields($fields)
-                    setLoading(false)
                   }
                 })
             })

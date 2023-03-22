@@ -35,7 +35,13 @@ export function UrlSelect(config) {
   }, [config.url])
 
   return (
-    <ArcoSelect {...config} allowClear options={options} className='min-w-45'>
+    <ArcoSelect
+      {...config}
+      value={config.value === null ? void 0 : config.value}
+      allowClear
+      options={options}
+      className='min-w-45'
+    >
     </ArcoSelect>
   )
 }
@@ -101,6 +107,7 @@ export function UrlSearchSelect(config) {
   return (
     <ArcoSelect
       {...config}
+      value={config.value === null ? void 0 : config.value}
       onClear={clear}
       onChange={change}
       allowClear

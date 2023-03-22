@@ -30,6 +30,7 @@ const ImageProgress = ({ rate }) => {
 export function UploadImages({
   value,
   onChange,
+  disabled,
   capture,
   children,
   width,
@@ -133,6 +134,7 @@ export function UploadImages({
 export function UploadImage({
   value,
   onChange,
+  disabled,
   children,
   ...props
 }) {
@@ -141,7 +143,7 @@ export function UploadImage({
   }
   const val = useMemo(() => value ? [value] : [], [value])
 
-  return <UploadImages {...props} onChange={change} max={1} value={val}>
+  return <UploadImages {...props} onChange={change} max={1} value={val} disabled={disabled}>
     {children}
   </UploadImages>
 }
@@ -166,6 +168,7 @@ export function UploadFiles({
   children,
   accept,
   uploadType,
+  disabled,
   max = 9
 }) {
 
@@ -187,11 +190,17 @@ export function UploadFiles({
   }
 
   const del = useCallback(index => {
+    if(disabled) {
+      return
+    }
     value.splice(index, 1)
     onChange?.([...value])
   }, [onChange, value])
 
   const add = () => {
+    if(disabled) {
+      return
+    }
     uploadFile().progress(res => {
       setProgress(Math.trunc(res * 100))
     }).start(() => {
@@ -206,6 +215,9 @@ export function UploadFiles({
   }
 
   const sort = useCallback((index, type) => {
+    if(disabled) {
+      return
+    }
     const del = value.splice(index, 1)
     value.splice(type ? index + 1 : index - 1, 0, ...del)
 
@@ -237,13 +249,13 @@ export function UploadFiles({
         width: 150,
         render: (index, record) => (
           <>
-            <Link disabled={record.key === 0} onClick={() => {
+            <Link disabled={disabled || record.key === 0} onClick={() => {
               sort(record.key, 0)
             }}>上移</Link>
-            <Link disabled={record.key === value?.length - 1} onClick={() => {
+            <Link disabled={disabled || record.key === value?.length - 1} onClick={() => {
               sort(record.key, 1)
             }}>下移</Link>
-            <Link onClick={() => {
+            <Link disabled={disabled} onClick={() => {
               del(record.key)
             }}>删除</Link>
           </>
@@ -261,7 +273,7 @@ export function UploadFiles({
           ? children
           : <>
             <div>
-              <Button type='primary' icon={progress ? <Progress
+              <Button disabled={disabled} type='primary' icon={progress ? <Progress
                 size='mini'
                 percent={progress}
               /> : <IconUpload />} onClick={add}>
@@ -281,6 +293,7 @@ export function UploadFile({
   onChange,
   accept,
   uploadType,
+  disabled,
   children,
 }) {
 
@@ -301,11 +314,17 @@ export function UploadFile({
     })
   }
 
-  const del = useCallback(index => {
+  const del = useCallback(() => {
+    if(disabled) {
+      return
+    }
     onChange?.({})
   }, [onChange, value])
 
   const add = () => {
+    if(disabled) {
+      return
+    }
     uploadFile().progress(res => {
       setProgress(Math.trunc(res * 100))
     }).start(() => {
@@ -324,7 +343,7 @@ export function UploadFile({
         : children
           ? children
           : <>
-            <div className='lg:w-100 bg-gray-2 h-40 border-dashed border-color-3 rounded flex items-center justify-center'>
+            <div className='lg:w-full bg-gray-2 h-40 border-dashed border-color-3 rounded flex items-center justify-center'>
               <div className='flex flex-col gap-4 justify-center items-center'>
                 {progress ? <Progress
                   type='circle'
@@ -338,10 +357,10 @@ export function UploadFile({
                       <div className='text-color-3'>{getFilesize(value.size)}</div>
                     </div>
                     <div className='flex gap-2'>
-                      <Button icon={<IconUpload />} type='outline' onClick={add}>
+                      <Button disabled={disabled} icon={<IconUpload />} type='outline' onClick={add}>
                         重新上传
                       </Button>
-                      <Button icon={<IconDelete />} type='outline' status='danger' onClick={del}>
+                      <Button disabled={disabled} icon={<IconDelete />} type='outline' status='danger' onClick={del}>
                         删除
                       </Button>
                     </div>
@@ -349,7 +368,7 @@ export function UploadFile({
                     <div className='text-center'>
                       <div className='text-color-3'>暂无上传文件</div>
                     </div>
-                    <Button icon={<IconUpload />} type='outline' onClick={add}>
+                    <Button disabled={disabled} icon={<IconUpload />} type='outline' onClick={add}>
                       点击上传
                     </Button>
                   </>}

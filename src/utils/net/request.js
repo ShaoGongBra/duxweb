@@ -12,7 +12,10 @@ const requestReact = async ({ url, data, header, timeout, ...option } = {}) => {
   const controller = new AbortController()
   option.signal = controller.signal
 
-  const race = [fetch(url, option), asyncTimeOut(timeout)]
+  const race = [
+    fetch(url, option),
+    asyncTimeOut(timeout)
+  ]
   const res = await Promise.race(race)
   if (res.type === 'timeout') {
     // 终止请求
@@ -21,6 +24,29 @@ const requestReact = async ({ url, data, header, timeout, ...option } = {}) => {
   }
   // 清除定时器
   race[1].clear()
+  // 文件下载
+  const fileNameEncode = res.headers.get('content-disposition')?.split?.('filename=')[1]
+  if (fileNameEncode) {
+    const fileName = decodeURIComponent(fileNameEncode)
+    const blob = await res.blob()
+    const reader = new FileReader()
+    reader.readAsDataURL(blob)    // 转换为base64，可以直接放入a表情href
+    reader.onload = e => {
+      // 转换完成，创建一个a标签用于下载
+      const a = document.createElement('a')
+      a.download = fileName
+      a.href = e.target.result
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    }
+    return {
+      statusCode: res.status,
+      errMsg: res.statusText,
+      data: null,
+      header: {}
+    }
+  }
   const contentType = res.headers.get('Content-Type')?.toLowerCase() || ''
   const isJson = contentType.indexOf('application/json') === 0
   const headersValues = [...res.headers.values()]
