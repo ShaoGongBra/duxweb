@@ -1,8 +1,8 @@
-import React, {memo, useEffect, useMemo, useState} from 'react'
-import {OverlayScrollbarsComponent} from 'overlayscrollbars-react'
-import {Avatar, Button, Dropdown, Menu} from '@arco-design/web-react'
-import {IconDown, IconMoreVertical, IconRight} from '@arco-design/web-react/icon'
-import {deepCopy, route, theme, useDocSize, useMenu, user, useRoute} from '../../utils'
+import React, { memo, useEffect, useMemo, useState } from 'react'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
+import { Avatar, Button, Dropdown, Menu } from '@arco-design/web-react'
+import { IconDown, IconMoreVertical, IconRight } from '@arco-design/web-react/icon'
+import { deepCopy, route, theme, useDocSize, useMenu, user, useRoute } from '../../utils'
 import User from './User'
 
 import './Start.css'
@@ -21,7 +21,7 @@ const dropList = (
   </Menu>
 )
 
-const UserMenu = ({position = 'rb'}) => {
+const UserMenu = ({ position = 'rb' }) => {
   return (
     <Dropdown position={position} trigger='click' droplist={dropList}>
       <Avatar size={30}>admin</Avatar>
@@ -36,13 +36,13 @@ const Logo = () => (
     className='rounded w-4 p-2 cursor-pointer fill-white bg-primary'
   >
     <path
-      d='M170,94.52l-35.9-20.73-24.34,14,11.62,6.71a5,5,0,0,1,0,8.66L32.5,154.52a5,5,0,0,1-7.5-4.33V99.61a6.44,6.44,0,0,1,0-1.52V47.51a5,5,0,0,1,7.5-4.33l35,20.23,24.32-14L7.5.68A5,5,0,0,0,0,5V192.69A5,5,0,0,0,7.5,197L170,103.18A5,5,0,0,0,170,94.52Z'/>
+      d='M170,94.52l-35.9-20.73-24.34,14,11.62,6.71a5,5,0,0,1,0,8.66L32.5,154.52a5,5,0,0,1-7.5-4.33V99.61a6.44,6.44,0,0,1,0-1.52V47.51a5,5,0,0,1,7.5-4.33l35,20.23,24.32-14L7.5.68A5,5,0,0,0,0,5V192.69A5,5,0,0,0,7.5,197L170,103.18A5,5,0,0,0,170,94.52Z' />
     <path
-      d='M32.93,103.18l35.9,20.73,24.34-14-11.62-6.71a5,5,0,0,1,0-8.66l88.92-51.34a5,5,0,0,1,7.5,4.33V98.09a6.44,6.44,0,0,1,0,1.52v50.58a5,5,0,0,1-7.5,4.33l-35-20.23-24.32,14L195.47,197a5,5,0,0,0,7.5-4.33V5a5,5,0,0,0-7.5-4.33L32.93,94.52A5,5,0,0,0,32.93,103.18Z'/>
+      d='M32.93,103.18l35.9,20.73,24.34-14-11.62-6.71a5,5,0,0,1,0-8.66l88.92-51.34a5,5,0,0,1,7.5,4.33V98.09a6.44,6.44,0,0,1,0,1.52v50.58a5,5,0,0,1-7.5,4.33l-35-20.23-24.32,14L195.47,197a5,5,0,0,0,7.5-4.33V5a5,5,0,0,0-7.5-4.33L32.93,94.52A5,5,0,0,0,32.93,103.18Z' />
   </svg>
 )
 
-const LayoutSide = memo(({children}) => {
+const LayoutSide = memo(({ children }) => {
   const menuData = useMenu()
 
   const allMenu = useMemo(() => {
@@ -62,7 +62,7 @@ const LayoutSide = memo(({children}) => {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileCollapsed, setMobileCollapsed] = useState(false)
 
-  const {currentState} = useRoute()
+  const { currentState } = useRoute()
 
   const [oldActive, active] = useMemo(() => {
     // 找到默认选中的菜单
@@ -92,22 +92,24 @@ const LayoutSide = memo(({children}) => {
       return ~index ? index : currentPaths.length
     }
 
-    const _active = [0, []]
+    const _active = [
+      0, // 匹配度
+      [], // 数组中的第一项是一个数组 标识第一级的位置和是否是app 后面的是找到的菜单的index
+    ]
 
     const getActive = (list = allMenu, indexs = []) => {
-      const level = indexs.length
       return list?.some((item, i) => {
-        indexs[level] = item.index ?? i
+        const _indexs = [...indexs, item.index ?? i]
         if (item.children?.length) {
-          return getActive(item.children, [...indexs])
+          return getActive(item.children, [..._indexs])
         } else {
           const match = getMatch(item.url)
           if (match === 10) {
-            _active[1] = indexs
+            _active[1] = _indexs
             return true
           } else if (match > _active[0]) {
             _active[0] = match
-            _active[1] = indexs
+            _active[1] = _indexs
           }
           return false
         }
@@ -117,7 +119,9 @@ const LayoutSide = memo(({children}) => {
     return [
       _active[1]?.[0],
       [
-        _active[1]?.[0]?.[2] ? allMenu.filter(item => !item.extend).findIndex(item => item.manage) : _active[1]?.[0]?.[1],
+        _active[1]?.[0]?.[2]
+          ? allMenu.filter(item => !item.extend).findIndex(item => item.manage)
+          : _active[1]?.[0]?.[1],
         ...(_active[1]?.slice(1) || [])
       ]
     ]
@@ -165,7 +169,7 @@ const LayoutSide = memo(({children}) => {
               <Button
                 type='text'
                 className='!text-color-1 text-title-1'
-                icon={<IconMoreVertical/>}
+                icon={<IconMoreVertical />}
                 onClick={() => {
                   setMobileCollapsed(!mobileCollapsed)
                 }}
@@ -173,11 +177,11 @@ const LayoutSide = memo(({children}) => {
             </div>
             <div>
               <div className='flex items-center justify-center' onClick={theme.switchMode}>
-                <Logo/>
+                <Logo />
               </div>
             </div>
             <div>
-              <UserMenu position='lt'/>
+              <UserMenu position='lt' />
             </div>
           </div>
           {mobileCollapsed && (
@@ -196,10 +200,10 @@ const LayoutSide = memo(({children}) => {
                       }}
                     >
                       <div className='flex gap-2 items-center'>
-                        <div className={`${app.icon} text-base`}/>
+                        <div className={`${app.icon} text-base`} />
                         {app.name}
                       </div>
-                      <div>{app.expand == true ? <IconDown/> : <IconRight/>}</div>
+                      <div>{app.expand == true ? <IconDown /> : <IconRight />}</div>
                     </div>
                     {!!app.children?.length && (
                       <div className={`p-l-10 flex-col ${app.expand == true ? 'flex' : 'hidden'}`}>
@@ -220,9 +224,9 @@ const LayoutSide = memo(({children}) => {
                                     <div
                                       key={'' + appKey + parentKey + subKey}
                                       className={`flex items-center gap-2 py-2 px-2 rounded hover:bg-gray-3 ${active[0] == appKey &&
-                                      active[1] == parentKey &&
-                                      active[2] == subKey &&
-                                      'text-primary'}`}
+                                        active[1] == parentKey &&
+                                        active[2] == subKey &&
+                                        'text-primary'}`}
                                       onClick={() => {
                                         route.push(sub.url)
                                       }}
@@ -248,12 +252,12 @@ const LayoutSide = memo(({children}) => {
           <div className='h-screen bg-dark-800 w-16 flex text-gray-6 flex-col z-1 border-color-2 border-r'>
             <div className='py-6 flex justify-center items-center '>
               <div onClick={() => setCollapsed(!collapsed)}>
-                <Logo/>
+                <Logo />
               </div>
             </div>
             <OverlayScrollbarsComponent
               defer
-              options={{scrollbars: {autoHide: 'scroll'}}}
+              options={{ scrollbars: { autoHide: 'scroll' } }}
               className='flex-auto py-4'
             >
               <div className='flex flex-col gap-4'>
@@ -272,7 +276,7 @@ const LayoutSide = memo(({children}) => {
                           }
                         }}
                       >
-                        <div className={`${app.icon} text-xl`}/>
+                        <div className={`${app.icon} text-xl`} />
                         <div className='text-xs'>{app.name}</div>
                         {panel == appKey && <div className='absolute w-3px bg-primary-7 h-full left-0'></div>}
                       </div>
@@ -285,7 +289,7 @@ const LayoutSide = memo(({children}) => {
                               <div key={'' + appKey + parentKey}>
                                 <div
                                   className={` hover:text-primary rounded-sm px-2 py-1.5 cursor-pointer ${(active[0] == appKey && active[1] == parentKey) ||
-                                  (expands[0] == appKey && expands[1] == parentKey)
+                                    (expands[0] == appKey && expands[1] == parentKey)
                                     ? 'text-primary-7'
                                     : ''}`}
                                   onClick={e => {
@@ -331,13 +335,13 @@ const LayoutSide = memo(({children}) => {
               <div>
                 <div
                   className='hover:text-primary-7 cursor-pointer rounded-sm flex items-center justify-center flex-col gap-0.5'>
-                  <div className='i-fluent:dark-theme-20-regular w-5 h-5' onClick={theme.switchMode}/>
+                  <div className='i-fluent:dark-theme-20-regular w-5 h-5' onClick={theme.switchMode} />
                 </div>
               </div>
 
               <div>
                 <div className='cursor-pointer flex items-center justify-center flex-col '>
-                  <UserMenu/>
+                  <UserMenu />
                 </div>
               </div>
             </div>
@@ -346,7 +350,7 @@ const LayoutSide = memo(({children}) => {
             <div
               className='h-screen bg-color-1 text-color-1 p-2 overflow-hidden  z-1 visible opacity-100 w-40 border-r border-color-2'
             >
-              <OverlayScrollbarsComponent defer options={{scrollbars: {autoHide: 'scroll'}}} className='h-full'>
+              <OverlayScrollbarsComponent defer options={{ scrollbars: { autoHide: 'scroll' } }} className='h-full'>
                 {menu[panel].children.map((parent, parentKey) => {
                   return (
                     <div key={parentKey}>
@@ -389,7 +393,7 @@ export default function Start() {
     <User>
       <div className='app-layout h-screen flex flex-col md:flex-row bg-gray-2 text-color-1'>
         <LayoutSide>
-          <RoutePage/>
+          <RoutePage />
         </LayoutSide>
       </div>
     </User>

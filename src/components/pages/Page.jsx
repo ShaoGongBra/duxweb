@@ -1,5 +1,6 @@
 import React from 'react'
 import Scrollbar from './Scrollbar'
+import pack from '../../../package.json'
 
 export default function Page({ header, footer, sideLeft, children }) {
   return (
@@ -8,7 +9,7 @@ export default function Page({ header, footer, sideLeft, children }) {
       <Scrollbar className='flex-auto p-4  lg:w-1'>
         {header}
         {header ? <div className='mt-2'>{children}</div> : children}
-        <div className='text-center p-4 text-color-4'>DuxWeb@1.0.0</div>
+        <div className='text-center p-4 text-color-4'>DuxWeb@{pack.version}</div>
       </Scrollbar>
       {footer}
     </div>
