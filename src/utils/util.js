@@ -14,3 +14,20 @@ export const asyncTimeOut = time => {
 }
 
 export const noop = () => undefined
+
+export const loadScript = src => {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script')
+    script.src = src
+
+    script.addEventListener('load', () => {
+      resolve()
+    })
+
+    script.addEventListener('error', (error) => {
+      reject(error);
+    })
+
+    document.body.appendChild(script)
+  })
+}

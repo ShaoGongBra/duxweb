@@ -1,0 +1,11 @@
+.LoginPage-change {
+  transform: rotateZ(45deg);
+  padding: 2rem 4rem 0.5rem 4rem;
+  top: -1rem;
+  right: -3.8rem;
+  cursor: pointer;
+  & > div {
+    transform: rotateZ(-45deg);
+    font-size: 1.5rem;
+  }
+}

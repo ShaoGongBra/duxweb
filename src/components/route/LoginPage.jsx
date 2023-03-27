@@ -2,7 +2,7 @@ import { Button, Form, Input, Message } from '@arco-design/web-react'
 import { IconLock, IconDesktop } from '@arco-design/web-react/icon'
 import React, { useCallback, useEffect, useState, useRef } from 'react'
 import vaptcha from '@chongying-star/vaptcha-typescript'
-import { globalConfig, request, System } from '../../utils'
+import { globalConfig, request, System, loadScript } from '../../utils'
 import loginBg from '../../static/login.png'
 import './LoginPage.scss'
 
@@ -54,6 +54,11 @@ export const useVerifyCode = () => {
 
 
 export const Login = ({ onLogin }) => {
+
+  const loginConfig = globalConfig.getConfig(data => data.client.login?.[System.current]) || {}
+
+  const vaptchaToekn = globalConfig.getConfig(data => data.client.vaptcha)
+
   const [form, setForm] = useState({
     username: '',
     password: '',
@@ -70,11 +75,9 @@ export const Login = ({ onLogin }) => {
   const [loginStatus, setLoginStatus] = useState('validating')
   const [loginMessage, setLoginMessage] = useState('')
   const [loading, setLoading] = useState(false)
-  const [disabled, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(!!vaptchaToekn)
 
   const verifyCode = useVerifyCode()
-
-  const loginConfig = globalConfig.getConfig(data => data.client.login?.[System.current]) || {}
 
   const getCode = useCallback(() => {
     verifyCode.getCode(async () => {
@@ -113,26 +116,31 @@ export const Login = ({ onLogin }) => {
   }, [form, onLogin])
 
   useEffect(() => {
-    vaptcha({
-      vid: globalConfig.getConfig(data => data.client.vaptcha),
-      container: '#VAPTCHAContainer',
-      mode: 'click',
-      area: 'auto',
-      scene: 0,
-    }).then((obj) => {
-      obj.render();
-      obj.listen('pass', function () {
-        let serverToken = obj.getServerToken();
-        setDisabled(false)
-        setForm(old => ({
-          ...old, vaptcha: {
-            server: serverToken.server,
-            token: serverToken.token,
-          }
-        }))
-      })
-    });
-  }, [])
+    if (!vaptchaToekn) {
+      return
+    }
+    loadScript('https://v-cn.vaptcha.com/v3.js').then(() => {
+      vaptcha({
+        vid: vaptchaToekn,
+        container: '#VAPTCHAContainer',
+        mode: 'click',
+        area: 'auto',
+        scene: 0,
+      }).then((obj) => {
+        obj.render();
+        obj.listen('pass', function () {
+          let serverToken = obj.getServerToken();
+          setDisabled(false)
+          setForm(old => ({
+            ...old, vaptcha: {
+              server: serverToken.server,
+              token: serverToken.token,
+            }
+          }))
+        })
+      });
+    })
+  }, [vaptchaToekn])
 
   return (
     <div
@@ -191,7 +199,8 @@ export const Login = ({ onLogin }) => {
                 : <FormItem name='code' label='验证码' validateStatus={loginStatus}>
                   <Input.Search
                     searchButton={verifyCode.text}
-                    loading={verifyCode.status}
+                    disabled={verifyCode.status > 1}
+                    loading={verifyCode.status === 2}
                     onSearch={getCode}
                     // defaultValue='Search content'
                     placeholder='请输入验证码'
@@ -199,7 +208,7 @@ export const Login = ({ onLogin }) => {
                   />
                 </FormItem>
             }
-            <div className='mb-2'>
+            {!!vaptchaToekn && <div className='mb-2'>
               <div id="VAPTCHAContainer" style={{
                 height: '36px'
               }}>
@@ -230,7 +239,7 @@ export const Login = ({ onLogin }) => {
                   <div className='flex-grow'>人机验证加载中...</div>
                 </div>
               </div>
-            </div>
+            </div>}
             <FormItem className="mb-0">
               <div>{loginStatus === 'error' ? <div className='text-danger'>{loginMessage}</div> : ''}</div>
               <div className='mt-3 w-full'>
@@ -243,8 +252,8 @@ export const Login = ({ onLogin }) => {
               </div>
             </FormItem>
           </Form>
-          {loginConfig.tel && <div className='absolute LoginPage-change' onClick={() => setPhoneLogin(!phoneLogin)}>
-            <div className={!phoneLogin ? 'i-heroicons:device-phone-mobile' : 'i-heroicons:key'} />
+          {loginConfig.tel && <div className='absolute LoginPage-change bg-primary-7' onClick={() => setPhoneLogin(!phoneLogin)}>
+            <div className={(!phoneLogin ? 'i-heroicons:device-phone-mobile' : 'i-heroicons:key') + ' text-white'} />
           </div>}
         </div>
       </div>
