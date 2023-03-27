@@ -56,7 +56,7 @@ export const Login = ({
   useEffect(() => {
     console.log(document.querySelector('#VAPTCHAContainer'))
     vaptcha({
-      vid: '',
+      vid: '64210816507890ee2e7fa2d6',
       container: '#VAPTCHAContainer',
       mode: 'click',
       area: 'auto',
@@ -66,12 +66,10 @@ export const Login = ({
       obj.listen('pass', function () {
         let serverToken = obj.getServerToken();
         setDisabled(false)
-        setForm({...form, ...{
-            vaptcha: {
-              server: serverToken.server,
-              token: serverToken.token,
-            }
-          }})
+        setForm(old => ({ ...old, vaptcha: {
+            server: serverToken.server,
+            token: serverToken.token,
+          } }))
       })
 
 
