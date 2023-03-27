@@ -1,8 +1,9 @@
 import { Button, Form, Input } from '@arco-design/web-react'
 import { IconLock, IconDesktop } from '@arco-design/web-react/icon'
-import React, { useCallback, useState } from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { request } from '../../utils'
 import loginBg from '../../static/login.png'
+import vaptcha from '@chongying-star/vaptcha-typescript'
 
 const FormItem = Form.Item
 
@@ -18,12 +19,19 @@ export const Login = ({
                       }) => {
   const [form, setForm] = useState({
     username: '',
-    password: ''
+    password: '',
+    vaptcha: {
+      server: '',
+      token: ''
+    }
   })
 
   const [loginStatus, setLoginStatus] = useState('validating')
   const [loginMessage, setLoginMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [disabled, setDisabled] = useState(true)
+
+
 
   const login = useCallback(() => {
     setLoginStatus('validating')
@@ -44,6 +52,31 @@ export const Login = ({
         }, 500)
       })
   }, [form, onLogin])
+
+  useEffect(() => {
+    console.log(document.querySelector('#VAPTCHAContainer'))
+    vaptcha({
+      vid: '',
+      container: '#VAPTCHAContainer',
+      mode: 'click',
+      area: 'auto',
+      scene: 0,
+    }).then((obj) => {
+      obj.render();
+      obj.listen('pass', function () {
+        let serverToken = obj.getServerToken();
+        setDisabled(false)
+        setForm({...form, ...{
+            vaptcha: {
+              server: serverToken.server,
+              token: serverToken.token,
+            }
+          }})
+      })
+
+
+    });
+  }, [])
 
   return (
     <div
@@ -93,10 +126,42 @@ export const Login = ({
                 size='large'
               />
             </FormItem>
+            <div className='mb-2'>
+              <div id="VAPTCHAContainer" style={{
+                height: '36px'
+              }}>
+
+                <div className='flex bg-gray-3 gap-4 items-center px-4 text-gray-6 fill-gray-5' style={{height:'36px'}}>
+                  <svg  className='flex-none' xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink"
+                        height="30px" viewBox="0 0 24 30"
+                        space="preserve">
+                    <rect x="0" y="9.22656" width="4" height="12.5469">
+                      <animate attributeName="height" attributeType="XML" values="5;21;5" begin="0s" dur="0.6s"
+                               repeatCount="indefinite"></animate>
+                      <animate attributeName="y" attributeType="XML" values="13; 5; 13" begin="0s" dur="0.6s"
+                               repeatCount="indefinite"></animate>
+                    </rect>
+                    <rect x="10" y="5.22656" width="4" height="20.5469">
+                      <animate attributeName="height" attributeType="XML" values="5;21;5" begin="0.15s" dur="0.6s"
+                               repeatCount="indefinite"></animate>
+                      <animate attributeName="y" attributeType="XML" values="13; 5; 13" begin="0.15s" dur="0.6s"
+                               repeatCount="indefinite"></animate>
+                    </rect>
+                    <rect x="20" y="8.77344" width="4" height="13.4531">
+                      <animate attributeName="height" attributeType="XML" values="5;21;5" begin="0.3s" dur="0.6s"
+                               repeatCount="indefinite"></animate>
+                      <animate attributeName="y" attributeType="XML" values="13; 5; 13" begin="0.3s" dur="0.6s"
+                               repeatCount="indefinite"></animate>
+                    </rect>
+                  </svg>
+                  <div className='flex-grow'>人机验证加载中...</div>
+                </div>
+              </div>
+            </div>
             <FormItem className="mb-0">
               <div>{loginStatus === 'error' ? <div className='text-danger'>{loginMessage}</div> : ''}</div>
               <div className='mt-3 w-full'>
-                <Button type='primary' htmlType='submit' size='large' long loading={loading}>
+                <Button type='primary' htmlType='submit' disabled={disabled} size='large' long loading={loading}>
                   登录
                 </Button>
               </div>

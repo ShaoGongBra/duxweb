@@ -48,6 +48,11 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
+"@chongying-star/vaptcha-typescript@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@chongying-star/vaptcha-typescript/-/vaptcha-typescript-1.0.0.tgz#ab60c45d4659500786d5e7824299571c646f4346"
+  integrity sha512-UTvjSEH522lPeKDRGO9+wWaINVWO4nNWFTPeKUknWPe6F8SXYkCa92Q5DwFap+pp1kEBTUMOqvfuOLUQZLIUJw==
+
 "@ckeditor/ckeditor5-adapter-ckfinder@^35.4.0":
   version "35.4.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-adapter-ckfinder/-/ckeditor5-adapter-ckfinder-35.4.0.tgz#c1d9cbbb6be682f23e594d9002a7441492ad805e"
