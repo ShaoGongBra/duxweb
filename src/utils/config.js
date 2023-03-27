@@ -24,8 +24,6 @@ class GlobalConfig extends ObjectManage {
     }
   }
 
-
-
   getConfig = callback => {
     const _data = { ...this.data.__global__, ...this.data[System.current] }
     return callback ? callback(_data) : _data
@@ -43,33 +41,29 @@ class GlobalConfig extends ObjectManage {
       }
     })
   }
+
+  useGlobalConfig = callback => {
+
+    const system = useSystem()
+  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const defaultData = useMemo(() => globalConfig.getConfig(callback), [])
+  
+    const [data, setData] = useState(defaultData)
+  
+    useEffect(() => {
+      const getData = () => setData(globalConfig.getConfig(callback))
+      getData()
+      const { remove } = globalConfig.onSet(getData)
+      return () => remove()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [system])
+  
+    return [data]
+  }
 }
 
 export const globalConfig = new GlobalConfig({
   cache: true,
   cacheKey: 'global-config'
 })
-
-/**
- * 配置信息
- * @returns
- */
-export const useGlobalConfig = callback => {
-
-  const system = useSystem()
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const defaultData = useMemo(() => globalConfig.getConfig(callback), [])
-
-  const [data, setData] = useState(defaultData)
-
-  useEffect(() => {
-    const getData = () => setData(globalConfig.getConfig(callback))
-    getData()
-    const { remove } = globalConfig.onSet(getData)
-    return () => remove()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [system])
-
-  return [data]
-}
