@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ObjectManage } from './data'
 import { System, useSystem } from './system'
+// 从项目里面同步获取配置文件 以防读取配置的时候无法获取
+import config from '../../../../client/config.json'
 
 class GlobalConfig extends ObjectManage {
   constructor(props) {
@@ -21,7 +23,8 @@ class GlobalConfig extends ObjectManage {
           logo: ''
         }
       }
-    }
+    },
+    [System.current]: config
   }
 
   getConfig = callback => {
@@ -42,15 +45,15 @@ class GlobalConfig extends ObjectManage {
     })
   }
 
-  useGlobalConfig = callback => {
+  useConfig = callback => {
 
     const system = useSystem()
-  
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const defaultData = useMemo(() => globalConfig.getConfig(callback), [])
-  
+
     const [data, setData] = useState(defaultData)
-  
+
     useEffect(() => {
       const getData = () => setData(globalConfig.getConfig(callback))
       getData()
@@ -58,8 +61,8 @@ class GlobalConfig extends ObjectManage {
       return () => remove()
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [system])
-  
-    return [data]
+
+    return data
   }
 }
 

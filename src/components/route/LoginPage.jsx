@@ -55,9 +55,8 @@ export const useVerifyCode = () => {
 
 export const Login = ({ onLogin }) => {
 
-  const loginConfig = globalConfig.getConfig(data => data.client.login?.[System.current]) || {}
-
-  const vaptchaToekn = globalConfig.getConfig(data => data.client.vaptcha)
+  const loginConfig = globalConfig.useConfig(data => data.client?.login?.[System.current] || {})
+  const vaptchaToekn = globalConfig.useConfig(data => data.client?.vaptcha)
 
   const [form, setForm] = useState({
     username: '',

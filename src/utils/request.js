@@ -2,6 +2,7 @@ import { createRequest, createUpload } from './net'
 import { System } from './system'
 import { user } from './user'
 import { qiniu } from './net/uploadDrive/qiniu'
+import { globalConfig } from './config'
 
 const mainConfigData = {
   config: {
@@ -78,6 +79,7 @@ const { upload, uploadTempFile, middle: uploadMiddle } = createUpload({
 })
 requestConfig({
   request: {
+    origin: globalConfig.getConfig(data => data.use.app?.domain),
     path: System.current
   }
 })
