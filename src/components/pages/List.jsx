@@ -7,7 +7,6 @@ import { Filter, FilterList } from '../list'
 import { Permission as DuxPermission } from '../../index'
 const InputSearch = Input.Search
 
-
 export default function PageList(
   {
     title, // 页面标题
@@ -75,7 +74,7 @@ export default function PageList(
         </div>
       )}
       <div className=' bg-color-1 rounded shadow-sm border border-color-2'>
-        {children && children([filterData, filterAction])}
+        {typeof children === 'function' ? children([filterData, filterAction]) : children}
       </div>
     </Page>}
   </Filter>
