@@ -1,11 +1,15 @@
 import { request } from './request'
 import { user } from './user'
-
+import { globalConfig } from './config'
+import { System } from './system'
 
 class Notify {
 
   constructor() {
-    this._init()
+    const notifyConfig = globalConfig.getConfig(data => data.client?.notify?.[System.current] || {})
+    if (!notifyConfig.disabled) {
+      this._init()
+    }
   }
 
   _init() {

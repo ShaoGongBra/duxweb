@@ -6,7 +6,7 @@ import config from '../../../../client/config.json'
 
 class GlobalConfig extends ObjectManage {
   constructor(props) {
-    super(props)
+    super({})
   }
 
   data = {
@@ -66,7 +66,4 @@ class GlobalConfig extends ObjectManage {
   }
 }
 
-export const globalConfig = new GlobalConfig({
-  cache: true,
-  cacheKey: 'global-config'
-})
+export const globalConfig = new GlobalConfig()
