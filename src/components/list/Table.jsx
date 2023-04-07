@@ -71,7 +71,7 @@ export const Table = forwardRef((
 
   return (
     <ArcoTable
-      key={!!data.length}
+      key={data?.map(item => item[primaryKey]).join('') || '-1'}
       defaultExpandAllRows
       border={false}
       data={data}
