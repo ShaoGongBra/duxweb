@@ -2,6 +2,7 @@ import { createRequest, createUpload } from './net'
 import { System } from './system'
 import { user } from './user'
 import { qiniu } from './net/uploadDrive/qiniu'
+import { ctyun } from './net/uploadDrive/ctyun'
 import { globalConfig } from './config'
 
 const mainConfigData = {
@@ -50,6 +51,7 @@ const { request, throttleRequest, middle: requestMiddle, config: requestConfig }
   }
 })
 
+// 七牛
 const qiniuDrive = qiniu()
 qiniuDrive.configSync(async () => {
   const res = await request('tools/uploadQiniu')
@@ -59,10 +61,24 @@ qiniuDrive.configSync(async () => {
   }
 })
 
+// 天翼云
+const ctyunDirve = ctyun()
+ctyunDirve.configSync(async () => {
+  const res = await request('tools/uploadOos')
+  return {
+    bucket: res.bucket,
+    endpoint: res.endpoint,
+    accessKeyId: res.credentials.AccessKeyId,
+    secretAccessKey: res.credentials.SecretAccessKey,
+    sessionToken: res.credentials.SessionToken
+  }
+})
+
 const { upload, uploadTempFile, middle: uploadMiddle } = createUpload({
   ...mainConfigData,
   drives: {
-    qiniu: qiniuDrive
+    qiniu: qiniuDrive,
+    ctyun: ctyunDirve
   },
   middle: {
     before: [

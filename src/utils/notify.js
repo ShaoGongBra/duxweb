@@ -40,6 +40,10 @@ class Notify {
       if (!this.status) {
         return
       }
+      // 错误不再请求
+      if (err.code >= 500 || err.code === 404) {
+        return console.log('请求发生错误 将停止获取通知', err)
+      }
       console.error('通知请求错误 将在稍后重试', err)
       setTimeout(() => {
         this._notify()
