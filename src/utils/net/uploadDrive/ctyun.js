@@ -103,7 +103,7 @@ export const ctyun = () => {
               mime: file.type,
               size: file.size,
               name: file.name,
-              url: res.Location
+              url: res.Location.startsWith('https://') ? res.Location : ('https://' + res.Location)
             })
           }
         })
