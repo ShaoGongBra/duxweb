@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import { Button, Input } from '@arco-design/web-react'
-import { IconFilter } from '@arco-design/web-react/icon'
+import React, {useState} from 'react'
+import {Button, Input} from '@arco-design/web-react'
+import {IconFilter} from '@arco-design/web-react/icon'
 import Header from './Header'
 import Page from './Page'
-import { Filter, FilterList } from '../list'
-import { Permission as DuxPermission } from '../../index'
+import {Filter, FilterList} from '../list'
+import {Permission as DuxPermission} from '../../index'
+
 const InputSearch = Input.Search
 
 export default function PageList(
@@ -45,10 +46,20 @@ export default function PageList(
                   }
                 </Filter.Item>
               )}
+              {
+                filters?.map?.((vo, key) => {
+                  if (!vo.quick) {
+                    return
+                  }
+                  return <Filter.Item key={key}
+                                      field={vo?.name}>{typeof vo?.render === 'function' ? vo?.render({tableData}) : vo?.render}</Filter.Item>
+                })
+              }
+
               {!!filters?.length && (
                 <Button
                   type='outline'
-                  icon={<IconFilter />}
+                  icon={<IconFilter/>}
                   onClick={() => {
                     setFilterColl(!filterColl)
                   }}
@@ -70,7 +81,7 @@ export default function PageList(
     >
       {filterColl && (
         <div className='p-4 border border-gray-3 rounded bg-color-1 mb-2'>
-          <FilterList items={filters} tableData={tableData} />
+          <FilterList items={filters} tableData={tableData}/>
         </div>
       )}
       <div className=' bg-color-1 rounded shadow-sm border border-color-2'>
