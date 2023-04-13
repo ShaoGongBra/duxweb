@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Button, Input} from '@arco-design/web-react'
 import {IconFilter} from '@arco-design/web-react/icon'
 import Header from './Header'
@@ -23,6 +23,18 @@ export default function PageList(
   },
 ) {
   const [filterColl, setFilterColl] = useState(false)
+
+  const [filterExtend, setFilterExtend] = useState(0)
+  useEffect(() => {
+    let extendNum = 0
+    filters?.map?.((vo, key) => {
+      if (vo.quick) {
+        return;
+      }
+      extendNum++
+    })
+    setFilterExtend(extendNum)
+  }, filters)
 
   const ContentPage = <Filter defaultData={defaultFilterData} bindUrl>
     {([filterData, filterAction]) => <Page
@@ -56,7 +68,7 @@ export default function PageList(
                 })
               }
 
-              {!!filters?.length && (
+              {!!filterExtend && (
                 <Button
                   type='outline'
                   icon={<IconFilter/>}
@@ -81,7 +93,12 @@ export default function PageList(
     >
       {filterColl && (
         <div className='p-4 border border-gray-3 rounded bg-color-1 mb-2'>
-          <FilterList items={filters} tableData={tableData}/>
+          <FilterList items={filters?.filter(vo => {
+            if (vo.quick) {
+              return false;
+            }
+            return true;
+          })} tableData={tableData}/>
         </div>
       )}
       <div className=' bg-color-1 rounded shadow-sm border border-color-2'>
