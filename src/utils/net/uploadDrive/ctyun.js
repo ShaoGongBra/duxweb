@@ -11,12 +11,13 @@ export const ctyun = () => {
     accessKeyId: '',
     secretAccessKey: '',
     sessionToken: '',
+    publicUrl: '',
     // 异步获取配置
     syncCallback: null,
     s3Client: null,
   }
 
-  const setConfig = ({ endpoint, bucket, accessKeyId, secretAccessKey, sessionToken }) => {
+  const setConfig = ({ endpoint, bucket, accessKeyId, secretAccessKey, sessionToken, publicUrl }) => {
     if (endpoint) {
       config.endpoint = endpoint
     }
@@ -31,6 +32,9 @@ export const ctyun = () => {
     }
     if (sessionToken) {
       config.sessionToken = sessionToken
+    }
+    if (publicUrl) {
+      config.publicUrl = publicUrl
     }
   }
 
@@ -103,7 +107,7 @@ export const ctyun = () => {
               mime: file.type,
               size: file.size,
               name: file.name,
-              url: res.Location.startsWith('https://') ? res.Location : ('https://' + res.Location)
+              url: config.publicUrl + '/' + res.Key
             })
           }
         })

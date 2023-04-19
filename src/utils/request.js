@@ -70,7 +70,8 @@ ctyunDirve.configSync(async () => {
     endpoint: res.endpoint,
     accessKeyId: res.credentials.AccessKeyId,
     secretAccessKey: res.credentials.SecretAccessKey,
-    sessionToken: res.credentials.SessionToken
+    sessionToken: res.credentials.SessionToken,
+    publicUrl: res.public_url
   }
 })
 
