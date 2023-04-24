@@ -3,7 +3,7 @@ import {Button, Input, InputNumber, Switch, Table} from '@arco-design/web-react'
 import {IconClose, IconDoubleDown, IconPlus} from '@arco-design/web-react/icon'
 import {deepCopy} from '../../utils'
 
-export const Spec = ({fields, value, onChange}) => {
+export const Spec = ({disabledAdd, fields, value, onChange}) => {
 
   const [spec, sku] = [value?.spec || [], value?.sku || []]
 
@@ -52,17 +52,17 @@ export const Spec = ({fields, value, onChange}) => {
         width: 120,
         render: (_, record, index) => {
           if (item.type === 'price') {
-            return <InputNumber value={record[item.field]} disabled={!!item.disabled} onChange={v => {
+            return <InputNumber value={record[item.field]} disabled={item.disabled ? true : false} onChange={v => {
               editData(index, item.field, v)
             }} step={0.01} precision={2}/>
           }
           if (item.type === 'number') {
-            return <InputNumber value={record[item.field]} disabled={!!item.disabled} onChange={v => {
+            return <InputNumber value={record[item.field]} disabled={item.disabled ? true : false} onChange={v => {
               editData(index, item.field, v)
             }}/>
           }
           if (item.type === 'text') {
-            return <Input value={record[item.field]} disabled={!!item.disabled} onChange={v => {
+            return <Input value={record[item.field]} disabled={item.disabled ? true : false} onChange={v => {
               editData(index, item.field, v)
             }}/>
           }
@@ -152,7 +152,7 @@ export const Spec = ({fields, value, onChange}) => {
   }, [specKey])
 
   return <div className='w-full'>
-    <Button type='outline' onClick={() => {
+    {!disabledAdd && <Button type='outline' onClick={() => {
       onChange?.({
         sku,
         spec: [...spec || [], {
@@ -160,8 +160,8 @@ export const Spec = ({fields, value, onChange}) => {
           spec: []
         }]
       })
-    }}>添加规格</Button>
-    {spec?.map((item, index) => (<div key={index} className='border-1 border-gray-200  p-3 mt-3'>
+    }}>添加规格</Button>}
+    {!disabledAdd && spec?.map((item, index) => (<div key={index} className='border-1 border-gray-200  p-3 mt-3'>
       <div className='flex flex-wrap flex-col lg:flex-row gap-4 lg:items-center mb-4'>
         <div className='flex-none'>规格名</div>
         <div className='flex-grow flex flex-col lg:flex-row gap-4 lg:items-center'>
