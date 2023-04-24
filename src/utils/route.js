@@ -40,7 +40,9 @@ const { routeList, registerRoutes, registerGlobalRoute } = (() => {
         }
         delete _routeList[key]
       })
-      list.forEach(([system, app, route]) => getRoute(route, [system, app]))
+      list.forEach(([system, app, route, config = {}]) => {
+        getRoute(route, [system, config.appName || app])
+      })
     },
     registerGlobalRoute: (url, page) => {
       _routeList.__global[url] = page
