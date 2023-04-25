@@ -9,10 +9,10 @@
   dependencies:
     color "^3.1.3"
 
-"@arco-design/web-react@^2.43.0":
-  version "2.44.3"
-  resolved "https://registry.yarnpkg.com/@arco-design/web-react/-/web-react-2.44.3.tgz#f2b53921d83dd50ba6362c1f0212fc96f460ebd7"
-  integrity sha512-Wi9NxcFctiXIyEJvP0l8JHUmATnzcAgLmW9wKNHzng6OPIcQM0oA+bso94O+zGR0RvgX13wvEIC5hsd5hQpP6A==
+"@arco-design/web-react@^2.47.1":
+  version "2.47.1"
+  resolved "https://registry.yarnpkg.com/@arco-design/web-react/-/web-react-2.47.1.tgz#178bade923454ec46c76ab5942ad7ff79dc505a0"
+  integrity sha512-fVjW59iN3aP48yiJchqGOnCh8bEmoOtoC40S/gdfzmwK7Ef3vh5GPRUydscLhReePck2vi6JLyV0aXEZRKkorA==
   dependencies:
     "@arco-design/color" "^0.4.0"
     "@babel/runtime" "^7.5.5"
@@ -28,10 +28,10 @@
     scroll-into-view-if-needed "2.2.20"
     shallowequal "^1.1.0"
 
-"@arco-themes/react-duxweb@^0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@arco-themes/react-duxweb/-/react-duxweb-0.0.15.tgz#d9bf9d7f7b75c1d72c7d58f33f0bb7dbd2878989"
-  integrity sha512-CU7JSIm5pt+mdZoWv4PvPVovuhJtDPQABZPDw7AYnlrrAVVh6L4qyLFlB1vA3K6gGXeupD41kuMgigxsN/q07Q==
+"@arco-themes/react-duxweb@^0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@arco-themes/react-duxweb/-/react-duxweb-0.0.16.tgz#3f4d43ec16ec2bf9c32522a2df9826a7e803d873"
+  integrity sha512-Qo9zxg7wJpQEaJUGQFcj5tlamsC0yz0XDmZKNElXgi1oPiGs7KTHvmvfdyR3Ls9F5aG/tIBY47cDfe+0EWAKQQ==
 
 "@babel/runtime-corejs2@^7.10.2":
   version "7.21.0"
