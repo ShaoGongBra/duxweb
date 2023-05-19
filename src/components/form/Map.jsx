@@ -1,16 +1,15 @@
-import React from 'react'
-import { Map as AMap, APILoader, Marker } from '@uiw/react-amap'
-import { useCallback, useRef, useState, useEffect } from 'react'
-import { Input, List, Avatar } from '@arco-design/web-react'
-import { globalConfig, useDocSize } from '../../utils'
-import { getLocationBase, getRegeo, amapRequest } from './mapUtil'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {APILoader, Map as AMap, Marker} from '@uiw/react-amap'
+import {Select} from '@arco-design/web-react'
+import {globalConfig, useDocSize} from '../../utils'
+import {amapRequest, getLocationBase, getRegeo} from './mapUtil'
 
 export const MapView = ({
-  onMoveEnd,
-  center,
-  zoom = 18,
-  markers
-}) => {
+                          onMoveEnd,
+                          center,
+                          zoom = 18,
+                          markers
+                        }) => {
 
   const map = useRef()
 
@@ -18,7 +17,7 @@ export const MapView = ({
 
   const mapChange = useCallback(() => {
     const _center = map.current.map.getCenter()
-    onMoveEnd?.({ center: [_center.lng, _center.lat] })
+    onMoveEnd?.({center: [_center.lng, _center.lat]})
   }, [onMoveEnd])
 
   return <APILoader akay={key}>
@@ -42,10 +41,10 @@ export const MapView = ({
 }
 
 export const MapSelect = ({
-  value,
-  onChange,
-  disabled
-}) => {
+                            value,
+                            onChange,
+                            disabled
+                          }) => {
 
   const [list, setList] = useState([])
 
@@ -60,13 +59,13 @@ export const MapSelect = ({
   useEffect(() => {
     if (value?.location && value?.longitude) {
       setCenter([+value.longitude, +value.location])
-      setLocation({ city: '', longitude: +value.longitude, latitude: +value.location })
+      setLocation({city: '', longitude: +value.longitude, latitude: +value.location})
     } else {
       // 定位获取当前位置
       getLocationBase().then(res => {
-        mapChange({ center: [res.longitude, res.latitude] })
+        mapChange({center: [res.longitude, res.latitude]})
         setCenter([res.longitude, res.latitude])
-        setLocation({ city: '', longitude: res.longitude, latitude: res.latitude })
+        setLocation({city: '', longitude: res.longitude, latitude: res.latitude})
       }).catch(err => {
         console.log('获取当前位置失败', err)
       })
@@ -74,6 +73,7 @@ export const MapSelect = ({
   }, [value?.location, value?.longitude])
 
   const search = useCallback(e => {
+    //console.log('search', e)
     const types = (() => {
       const typesArr = []
       for (let i = 1; i <= 19; i++) {
@@ -125,36 +125,51 @@ export const MapSelect = ({
 
   const [size, sizeEmit] = useDocSize()
 
-  return <div className='flex items-stretch' style={{ flexDirection: size < sizeEmit.md ? 'column' : 'row' }}>
+  return <div className='flex items-stretch flex-col gap-2'>
+
+    <div className=''>
+
+      <Select
+        placeholder='请输入关键词搜索'
+        allowClear
+        showSearch
+        onSearch={search}
+        onChange={(v) => {
+          selectItem(v)
+        }}
+        filterOption={false}
+        renderFormat={(option, value) => {
+          return option.value.name || option.value.address;
+        }}
+      >
+        {list.map((item, index) => (
+          <Select.Option key={index} value={item}>
+            <div className='flex flex-col gap-1 leading-4 py-2'>
+              <div>{item.name}</div>
+              <div className='text-gray-400'>{`${item.province}${item.city}${item.district}${item.address}`}</div>
+            </div>
+          </Select.Option>
+        ))}
+      </Select>
+
+    </div>
+
     <div className='relative flex-grow min-h-100'>
       <MapView
         center={center}
         onMoveEnd={mapChange}
       />
-      <div style={{ transform: 'translate3d(-50%, -100%, 0)' }} className='absolute left-50% top-50% flex flex-col items-center'>
-        <div className='w-8 h-8 rd-4 bg-rose' />
-        <div className='w-2px h-8 bg-rose' />
+      <div style={{transform: 'translate3d(-50%, -100%, 0)'}}
+           className='absolute left-50% top-50% flex flex-col items-center'>
+        <div className='w-8 h-8 rd-4 bg-rose'/>
+        <div className='w-2px h-8 bg-rose'/>
       </div>
 
       <div className='absolute bottom-6 w-full flex justify-center'>
-        <div className='bg-white p-2 rd-2'>当前位置: {value?.province}{value?.city}{value?.district}{value?.address}</div>
+        <div
+          className='bg-white p-2 rd-2'>当前位置: {value?.province}{value?.city}{value?.district}{value?.address}</div>
       </div>
     </div>
-    <div style={{ width: size < sizeEmit.md ? '100%' : '20rem' }}>
-      <Input.Search placeholder='请输入关键词搜索' onSearch={search} />
-      <List
-        dataSource={list}
-        className='bg-white max-h-100 mt-1'
-        render={(item, index) => (
-          <List.Item key={index} onClick={() => selectItem(item)}>
-            <List.Item.Meta
-              avatar={<Avatar shape='circle'>{index + 1}</Avatar>}
-              title={item.name}
-              description={`${item.province}${item.city}${item.district}${item.address}`}
-            />
-          </List.Item>
-        )}
-      />
-    </div>
+
   </div>
 }
