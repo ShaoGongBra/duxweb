@@ -5,7 +5,7 @@ import { Page } from './index';
 import Header from './Header';
 
 
-export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, className, children }) {
+export function ModalForm({ url, timeout, infoUrl, infoSet = true, layout, onSubmit, className, children }) {
   const [size, sizeType] = useDocSize()
   const [form] = ArcoForm.useForm()
   const [disabled, setDisabled] = useState(true)
@@ -66,7 +66,8 @@ export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, clas
             form.validate().then(res => {
               setLoading(true)
               request({
-                url: url,
+                url,
+                timeout,
                 method: 'POST',
                 data: res,
                 middle: {
@@ -112,7 +113,7 @@ export function ModalForm({ url, infoUrl, infoSet = true, layout, onSubmit, clas
 }
 
 
-export function PageForm({ url, infoUrl, onSubmit, title, children }) {
+export function PageForm({ url, timeout, infoUrl, onSubmit, title, children }) {
   const [form] = ArcoForm.useForm()
   const [disabled, setDisabled] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -162,7 +163,8 @@ export function PageForm({ url, infoUrl, onSubmit, title, children }) {
                   form.validate().then(res => {
                     setLoading(true)
                     request({
-                      url: url,
+                      url,
+                      timeout,
                       method: 'POST',
                       data: res,
                       middle: {
