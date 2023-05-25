@@ -19,7 +19,8 @@ export default function PageList(
     defaultFilterData, // 筛选数据
     side, // 边栏
     permission, // 权限标记
-    children
+    children,
+    filterRender
   },
 ) {
   const [filterColl, setFilterColl] = useState(false)
