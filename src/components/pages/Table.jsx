@@ -17,6 +17,8 @@ export default forwardRef(({
   width = 1000,
   permission, // 权限标记
   tableProps,
+  dataCallBack, // 数据回调
+  filterRender
 }, ref) => {
 
   const table = useRef(null)
@@ -41,6 +43,7 @@ export default forwardRef(({
       defaultFilterData={defaultFilterData}
       side={side}
       permission={permission}
+      filterRender={filterRender}
     >
       {([filterData]) => <DuxTable
         ref={table}
@@ -52,7 +55,10 @@ export default forwardRef(({
         primaryKey={primaryKey}
         width={width}
         tableProps={tableProps}
-        onListData={setTableDat}
+        onListData={(e) => {
+          setTableDat(e)
+          dataCallBack?.(e)
+        }}
       />}
     </PageList>
   )

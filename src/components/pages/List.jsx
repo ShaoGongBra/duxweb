@@ -101,6 +101,11 @@ export default function PageList(
           })} tableData={tableData}/>
         </div>
       )}
+
+      {filterRender && filterColl && <div className='p-4 bg-color-1 rounded mb-2 border border-color-2'>
+        {filterRender}
+      </div>}
+
       <div className=' bg-color-1 rounded shadow-sm border border-color-2'>
         {typeof children === 'function' ? children([filterData, filterAction]) : children}
       </div>
