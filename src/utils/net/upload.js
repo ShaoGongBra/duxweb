@@ -172,7 +172,9 @@ const uploadTempFile = (files, option = {}) => {
       setTimeout(async () => {
         let requestParams = {
           url: getUrl(option.api || uploadConfig.api, {}, option),
-          timeout: option.timeout
+        }
+        if(option.timeout) {
+          requestParams.timeout = option.timeout
         }
 
         requestParams.header = {
