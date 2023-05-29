@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Input } from '@arco-design/web-react'
-import { IconFilter } from '@arco-design/web-react/icon'
+import React, {useEffect, useState} from 'react'
+import {Button, Input} from '@arco-design/web-react'
+import {IconFilter} from '@arco-design/web-react/icon'
 import Header from './Header'
 import Page from './Page'
-import { Filter, FilterList } from '../list'
-import { Permission as DuxPermission } from '../../index'
+import {Filter, FilterList} from '../list'
+import {Permission as DuxPermission} from '../../index'
 
 const InputSearch = Input.Search
 
@@ -20,7 +20,8 @@ export default function PageList(
     side, // 边栏
     permission, // 权限标记
     children,
-    filterRender
+    filterRender,
+    header
   },
 ) {
   const [filterColl, setFilterColl] = useState(false)
@@ -40,54 +41,57 @@ export default function PageList(
   const ContentPage = <Filter defaultData={defaultFilterData} bindUrl>
     {([filterData, filterAction]) => <Page
       header={
-        <Header
-          title={title}
-          index={filterData.tab}
-          menus={menus}
-          tools={
-            <>
-              {search && (
-                <Filter.Item field='keyword'>
-                  {
-                    itemFilter => <InputSearch
-                      allowClear
-                      value={itemFilter.value}
-                      placeholder='请输入关键词进行搜索'
-                      onChange={v => itemFilter.setValue('keyword', v)}
-                      onPressEnter={itemFilter.submit}
-                    />
-                  }
-                </Filter.Item>
-              )}
-              {
-                filters?.map?.((vo, key) => {
-                  if (!vo.quick) {
-                    return
-                  }
-                  return <Filter.Item key={key}
-                    field={vo?.name}>{typeof vo?.render === 'function' ? vo?.render({ tableData }) : vo?.render}</Filter.Item>
-                })
-              }
+        <>
+          {header}
+          <Header
+            title={title}
+            index={filterData.tab}
+            menus={menus}
+            tools={
+              <>
+                {search && (
+                  <Filter.Item field='keyword'>
+                    {
+                      itemFilter => <InputSearch
+                        allowClear
+                        value={itemFilter.value}
+                        placeholder='请输入关键词进行搜索'
+                        onChange={v => itemFilter.setValue('keyword', v)}
+                        onPressEnter={itemFilter.submit}
+                      />
+                    }
+                  </Filter.Item>
+                )}
+                {
+                  filters?.map?.((vo, key) => {
+                    if (!vo.quick) {
+                      return
+                    }
+                    return <Filter.Item key={key}
+                                        field={vo?.name}>{typeof vo?.render === 'function' ? vo?.render({tableData}) : vo?.render}</Filter.Item>
+                  })
+                }
 
-              {!!filterExtend && (
-                <Button
-                  type='outline'
-                  icon={<IconFilter />}
-                  onClick={() => {
-                    setFilterColl(!filterColl)
-                  }}
-                >
-                  筛选
-                </Button>
-              )}
-            </>
-          }
-          tabs={tabs}
-          onChange={tab => {
-            filterAction.setValue('tab', tab)
-            setTimeout(filterAction.submit, 0)
-          }}
-        />
+                {!!filterExtend && (
+                  <Button
+                    type='outline'
+                    icon={<IconFilter/>}
+                    onClick={() => {
+                      setFilterColl(!filterColl)
+                    }}
+                  >
+                    筛选
+                  </Button>
+                )}
+              </>
+            }
+            tabs={tabs}
+            onChange={tab => {
+              filterAction.setValue('tab', tab)
+              setTimeout(filterAction.submit, 0)
+            }}
+          />
+        </>
       }
 
       sideLeft={side && <div className='lg:h-full'>{side}</div>}
@@ -99,7 +103,7 @@ export default function PageList(
               return false;
             }
             return true;
-          })} tableData={tableData} />
+          })} tableData={tableData}/>
         </div>
       )}
 
