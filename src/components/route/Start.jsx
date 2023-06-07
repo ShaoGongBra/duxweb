@@ -162,7 +162,7 @@ const LayoutSide = memo(({ children }) => {
 
   return (
     <>
-      <div className='flex-none'>
+      {menu.length > 0 && <div className='flex-none'>
         <div className='md:hidden '>
           <div className='flex justify-between items-center bg-color-1 border-b border-color-2 p-2'>
             <div>
@@ -381,7 +381,7 @@ const LayoutSide = memo(({ children }) => {
             </div>
           )}
         </div>
-      </div>
+      </div>}
       {children}
     </>
   )

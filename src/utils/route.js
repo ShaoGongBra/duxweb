@@ -166,17 +166,21 @@ class Menu extends ObjectManage {
       route.init()
       return
     }
-    const { remove } = user.onLoginStatus(async status => {
-      if (status) {
-        const res = await request({
-          url: 'menu'
-        })
-        this.data[System.current] = res.main
-        route.init()
-        this.set({ ...this.data })
-        remove()
-      }
-    })
+    if (user.getCurrentConfig().force === false) {
+      route.init()
+    } else {
+      const { remove } = user.onLoginStatus(async status => {
+        if (status) {
+          const res = await request({
+            url: 'menu'
+          })
+          this.data[System.current] = res.main
+          route.init()
+          this.set({ ...this.data })
+          remove()
+        }
+      })
+    }
   }
 }
 
@@ -359,6 +363,7 @@ export class RouteManage extends ObjectManage {
 export const route = new RouteManage()
 
 export const useRoute = () => {
+
   const [data, setData] = useState(route.data)
 
   useEffect(() => {
