@@ -50,7 +50,7 @@ export default function PageList(
             tools={
               <>
                 {search && (
-                  <Filter.Item field='keyword'>
+                  <div className='md:max-w-150'><Filter.Item field='keyword'>
                     {
                       itemFilter => <InputSearch
                         allowClear
@@ -60,15 +60,16 @@ export default function PageList(
                         onPressEnter={itemFilter.submit}
                       />
                     }
-                  </Filter.Item>
+                  </Filter.Item></div>
                 )}
                 {
                   filters?.map?.((vo, key) => {
                     if (!vo.quick) {
                       return
                     }
-                    return <Filter.Item key={key}
-                                        field={vo?.name}>{typeof vo?.render === 'function' ? vo?.render({tableData}) : vo?.render}</Filter.Item>
+                    return <div className='md:max-w-150'><Filter.Item key={key}
+                                                                      field={vo?.name}>{typeof vo?.render === 'function' ? vo?.render({tableData}) : vo?.render}</Filter.Item>
+                    </div>
                   })
                 }
 
