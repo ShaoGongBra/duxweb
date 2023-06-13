@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Select as ArcoSelect, Message, Spin, Avatar } from '@arco-design/web-react'
-import { request } from '../../utils'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {Message, Select as ArcoSelect, Spin} from '@arco-design/web-react'
+import {request} from '../../utils'
 
 
 function formatData(list, fieldNames) {
@@ -40,7 +40,7 @@ export function UrlSelect(config) {
       value={config.value === null ? void 0 : config.value}
       allowClear
       options={options}
-      className='min-w-45'
+      className={`min-w-45 ${config.className}`}
     >
     </ArcoSelect>
   )
@@ -100,7 +100,7 @@ export function UrlSearchSelect(config) {
     if (config.value && config.value !== currentValue.current.value) {
       currentValue.current.value = config.value
       currentValue.current.edit = true
-      getData('', null, { [config.valueField || 'key']: config.value })
+      getData('', null, {[config.valueField || 'key']: config.value})
     }
   }, [config.value])
 
@@ -125,7 +125,7 @@ export function UrlSearchSelect(config) {
               justifyContent: 'center',
             }}
           >
-            <Spin style={{ margin: 12 }} />
+            <Spin style={{margin: 12}}/>
           </div>
         ) : null
       }
