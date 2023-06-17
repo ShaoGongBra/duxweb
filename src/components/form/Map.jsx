@@ -89,7 +89,7 @@ export const MapSelect = ({
       extensions: 'all',
       offset: 25,
       types,
-      citylimit: true
+      // citylimit: true
     }).then(res => {
       setList(res.pois.map(item => ({
         province: item.pname,
