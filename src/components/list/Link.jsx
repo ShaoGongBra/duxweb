@@ -2,6 +2,31 @@ import React from 'react'
 import { Button, Message, Popconfirm } from '@arco-design/web-react'
 import { Permission, request, route } from '../../index';
 
+export const LinkPage = ({
+  key,
+  permission,
+  url,
+  params,
+  name,
+  button,
+}) => {
+  return (
+    <Permission mark={permission} key={key}>
+      <Button
+        {...button}
+        onClick={() => {
+          route.push(
+            url,
+            params
+          )
+        }}
+      >
+        {name}
+      </Button>
+    </Permission>
+  )
+}
+
 export const LinkModal = ({
   key,
   permission,
