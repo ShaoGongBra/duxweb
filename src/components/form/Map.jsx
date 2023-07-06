@@ -27,7 +27,7 @@ export const MapView = ({
       zoom={zoom}
       onDragEnd={mapChange}
       onZoomEnd={mapChange}
-      onComplete={mapChange}
+      // onComplete={mapChange}
       className='absolute left-0 right-0 top-0 right-0'
     >
       {
@@ -78,7 +78,7 @@ export const MapSelect = ({
         }).catch(err => {
           console.log('获取当前位置失败', err)
         })
-      }, 2000)
+      }, 1500)
       
       return () => {
         unset = true
@@ -136,8 +136,6 @@ export const MapSelect = ({
     onChange?.(item)
     setCenter([item.longitude, item.location])
   }, [onChange])
-
-  const [size, sizeEmit] = useDocSize()
 
   return <div className='flex items-stretch flex-col gap-2'>
 
