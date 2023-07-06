@@ -1,15 +1,15 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {APILoader, Map as AMap, Marker} from '@uiw/react-amap'
-import {Select} from '@arco-design/web-react'
-import {globalConfig, useDocSize} from '../../utils'
-import {amapRequest, getLocationBase, getRegeo} from './mapUtil'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { APILoader, Map as AMap, Marker } from '@uiw/react-amap'
+import { Select } from '@arco-design/web-react'
+import { globalConfig, useDocSize } from '../../utils'
+import { amapRequest, getLocationBase, getRegeo } from './mapUtil'
 
 export const MapView = ({
-                          onMoveEnd,
-                          center,
-                          zoom = 18,
-                          markers
-                        }) => {
+  onMoveEnd,
+  center,
+  zoom = 18,
+  markers
+}) => {
 
   const map = useRef()
 
@@ -17,7 +17,7 @@ export const MapView = ({
 
   const mapChange = useCallback(() => {
     const _center = map.current.map.getCenter()
-    onMoveEnd?.({center: [_center.lng, _center.lat]})
+    onMoveEnd?.({ center: [_center.lng, _center.lat] })
   }, [onMoveEnd])
 
   return <APILoader akay={key}>
@@ -41,10 +41,10 @@ export const MapView = ({
 }
 
 export const MapSelect = ({
-                            value,
-                            onChange,
-                            disabled
-                          }) => {
+  value,
+  onChange,
+  disabled
+}) => {
 
   const [list, setList] = useState([])
 
@@ -59,16 +59,30 @@ export const MapSelect = ({
   useEffect(() => {
     if (value?.location && value?.longitude) {
       setCenter([+value.longitude, +value.location])
-      setLocation({city: '', longitude: +value.longitude, latitude: +value.location})
+      setLocation({ city: '', longitude: +value.longitude, latitude: +value.location })
     } else {
-      // 定位获取当前位置
-      getLocationBase().then(res => {
-        mapChange({center: [res.longitude, res.latitude]})
-        setCenter([res.longitude, res.latitude])
-        setLocation({city: '', longitude: res.longitude, latitude: res.latitude})
-      }).catch(err => {
-        console.log('获取当前位置失败', err)
-      })
+      // 定位获取当前位置。做一个标记，如果用户的value重新输入了，则不使用定位的信息
+      let unset = false
+      // 延迟获取定位 以防编辑的时候异步获取的数据无法生效
+      setTimeout(() => {
+        if(unset) {
+          return
+        }
+        getLocationBase().then(res => {
+          if (unset) {
+            return
+          }
+          mapChange({ center: [res.longitude, res.latitude] })
+          setCenter([res.longitude, res.latitude])
+          setLocation({ city: '', longitude: res.longitude, latitude: res.latitude })
+        }).catch(err => {
+          console.log('获取当前位置失败', err)
+        })
+      }, 2000)
+      
+      return () => {
+        unset = true
+      }
     }
   }, [value?.location, value?.longitude])
 
@@ -159,10 +173,10 @@ export const MapSelect = ({
         center={center}
         onMoveEnd={mapChange}
       />
-      <div style={{transform: 'translate3d(-50%, -100%, 0)'}}
-           className='absolute left-50% top-50% flex flex-col items-center'>
-        <div className='w-8 h-8 rd-4 bg-rose'/>
-        <div className='w-2px h-8 bg-rose'/>
+      <div style={{ transform: 'translate3d(-50%, -100%, 0)' }}
+        className='absolute left-50% top-50% flex flex-col items-center'>
+        <div className='w-8 h-8 rd-4 bg-rose' />
+        <div className='w-2px h-8 bg-rose' />
       </div>
 
       <div className='absolute bottom-6 w-full flex justify-center'>
