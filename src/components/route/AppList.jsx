@@ -39,7 +39,7 @@ export const AppList = () => {
       {data.length ? data.map((v, k) => v?.list && (
         <div key={k}>
           <div className='mb-3 text-title-1 border-l-5 border-primary-7 pl-3'>{v.name}</div>
-          <div className='flex gap-2 flex-warp mb-5'>
+          <div className='flex gap-2 flex-wrap mb-5'>
             {v?.list.map((item, index) => (
               <div key={index} onClick={() => route.push(item.url || item.children?.[0]?.url || item.children?.[0]?.children?.[0]?.url)} className='w-100 bg-color-1 shadow-sm rounded flex items-center gap-4 p-5 border border-color-1 hover:border-primary-7 hover:bg-primary-1 cursor-pointer'>
                 <div className='flex-none'>
