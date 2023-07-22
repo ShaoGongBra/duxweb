@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import EditorJS from '@editorjs/editorjs'
 import { useEffect, useRef } from 'react'
 
 // 段落 文本
-import Paragraph from '@editorjs/paragraph'
+// import Paragraph from '@editorjs/paragraph'
 // 标题
 import Header from '@editorjs/header'
 // 文本颜色
@@ -16,7 +16,7 @@ import Underline from '@editorjs/underline'
 import AlignmentTuneTool from 'editorjs-text-alignment-blocktune'
 
 // 自定义组件
-import { ImageTool, VideoTool } from './tools'
+import { ImageTool, VideoTool, Paragraph } from './tools'
 
 export const LineEditor = ({
   value,
@@ -24,6 +24,8 @@ export const LineEditor = ({
   placeholder = '请输入',
   disabled
 }) => {
+
+  const [isReady, setIsReady] = useState(false)
 
   const dom = useRef(null)
 
@@ -38,8 +40,10 @@ export const LineEditor = ({
     editor.current = new EditorJS({
       holder: dom.current,
       placeholder,
+      onReady: () => setIsReady(true),
       onChange: (api, event) => {
         editor.current.save().then(outputData => {
+          // console.log('saveData', outputData)
           currentValue.current = JSON.stringify(outputData)
           if (onChangeRef.current) {
             onChangeRef.current(currentValue.current)
@@ -197,13 +201,14 @@ export const LineEditor = ({
   }, [])
 
   useEffect(() => {
+    if (!isReady) {
+      return
+    }
     if (value && currentValue.current !== value) {
       try {
         const _value = JSON.parse(value)
         if (_value.blocks && _value.time && _value.version) {
-          setTimeout(() => {
-            editor.current.render(_value)
-          }, 100)
+          editor.current.render(_value)
         } else {
           throw '不是此编辑器保存的数据，无法编辑：' + _value
         }
@@ -212,7 +217,7 @@ export const LineEditor = ({
       }
 
     }
-  }, [value])
+  }, [value, isReady])
 
   return <div ref={dom}>
 
