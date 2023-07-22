@@ -44,8 +44,7 @@ export class ImageTool {
 
   save(blockContent) {
     return {
-      ...this.data,
-      src: blockContent.src
+      ...this.data
     }
   }
 

@@ -201,7 +201,9 @@ export const LineEditor = ({
       try {
         const _value = JSON.parse(value)
         if (_value.blocks && _value.time && _value.version) {
-          editor.current.render(_value)
+          setTimeout(() => {
+            editor.current.render(_value)
+          }, 100)
         } else {
           throw '不是此编辑器保存的数据，无法编辑：' + _value
         }
