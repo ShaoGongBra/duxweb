@@ -206,7 +206,7 @@ declare namespace Request {
 export function getUrl(url: string, data: object, params: Request.RequestOption): string
 
 
-declare namespace upload {
+declare namespace Upload {
 
   /** 上传参数 */
   interface Option {
@@ -352,7 +352,7 @@ declare namespace upload {
        * upload('video', { sourceType: ['album', 'camera'] })
        * ```
        */
-    upload(type: keyof upload.Type, option: upload.Option): UploadTask
+    upload(type: keyof Upload.Type, option: Upload.Option): UploadTask
 
     /**
      * 直接上传已经选择的文件
@@ -363,7 +363,7 @@ declare namespace upload {
      * uploadTempFile([{ path: '' }])
      * ```
      */
-    uploadTempFile(files: upload.File[], option: upload.Option): UploadTask
+    uploadTempFile(files: Upload.File[], option: Upload.Option): UploadTask
   }
 }
 
@@ -415,9 +415,9 @@ export function createRequest(config: {
 export function createUpload(config: {
   config: RequestConfig,
   middle: {
-    before: upload.middle['before'][]
-    result: upload.middle['result'][]
-    error: upload.middle['error'][]
+    before: Upload.middle['before'][]
+    result: Upload.middle['result'][]
+    error: Upload.middle['error'][]
   }
 }): {
   middle: {
@@ -427,7 +427,7 @@ export function createUpload(config: {
      * @param common 是否用在全局
      * @returns 
      */
-    before: (callback: upload.middle['before'], common: boolean) => {
+    before: (callback: Upload.middle['before'], common: boolean) => {
       remove: () => void
     }
     /**
@@ -436,7 +436,7 @@ export function createUpload(config: {
      * @param common 是否用在全局
      * @returns 
      */
-    result: (callback: upload.middle['result'], common: boolean) => {
+    result: (callback: Upload.middle['result'], common: boolean) => {
       remove: () => void
     }
     /**
@@ -445,10 +445,10 @@ export function createUpload(config: {
      * @param common 是否用在全局
      * @returns 
      */
-    error: (callback: upload.middle['error'], common: boolean) => {
+    error: (callback: Upload.middle['error'], common: boolean) => {
       remove: () => void
     }
   },
-  upload: upload.functions['upload']
-  uploadTempFile: upload.functions['uploadTempFile']
+  upload: Upload.functions['upload']
+  uploadTempFile: Upload.functions['uploadTempFile']
 }
