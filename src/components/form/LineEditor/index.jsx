@@ -1,3 +1,4 @@
+import React from 'react'
 import EditorJS from '@editorjs/editorjs'
 import { useEffect, useRef } from 'react'
 
@@ -200,7 +201,6 @@ export const LineEditor = ({
       try {
         const _value = JSON.parse(value)
         if (_value.blocks && _value.time && _value.version) {
-          console.log(editor.current)
           editor.current.render(_value)
         } else {
           throw '不是此编辑器保存的数据，无法编辑：' + _value
