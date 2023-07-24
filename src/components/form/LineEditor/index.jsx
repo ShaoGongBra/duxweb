@@ -16,7 +16,9 @@ import Underline from '@editorjs/underline'
 import AlignmentTuneTool from 'editorjs-text-alignment-blocktune'
 
 // 自定义组件
-import { ImageTool, VideoTool, Paragraph } from './tools'
+import { ImageTool, VideoTool } from './tools'
+
+import './index.scss'
 
 export const LineEditor = ({
   value,
@@ -56,11 +58,9 @@ export const LineEditor = ({
       // readOnly: disabled,
       tools: {
         paragraph: {
-          class: Paragraph,
           config: {
             placeholder: placeholder
           },
-          // inlineToolbar: false,
           tunes: ['AlignmentTuneTool']
         },
         header: {
@@ -181,7 +181,8 @@ export const LineEditor = ({
              * Also, there are few internal block tunes: "delete", "moveUp" and "moveDown"
              */
             'delete': {
-              'Delete': '删除'
+              'Delete': '删除',
+              'Click to delete': '点击确认删除'
             },
             'moveUp': {
               'Move up': '上移'
@@ -219,7 +220,5 @@ export const LineEditor = ({
     }
   }, [value, isReady])
 
-  return <div ref={dom}>
-
-  </div>
+  return <div ref={dom} className='LineEditor'></div>
 }
