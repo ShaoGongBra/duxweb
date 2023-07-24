@@ -15,6 +15,11 @@ import Underline from '@editorjs/underline'
 // 对齐工具
 import AlignmentTuneTool from 'editorjs-text-alignment-blocktune'
 
+// 拖拽插件
+import DragDrop from 'editorjs-drag-drop'
+// 撤销插件
+// import Undo from 'editorjs-undo'
+
 // 自定义组件
 import { ImageTool, VideoTool } from './tools'
 
@@ -33,6 +38,8 @@ export const LineEditor = ({
 
   const editor = useRef(null)
 
+  // const undo = useRef(null)
+
   const onChangeRef = useRef(onChange)
   onChangeRef.current = onChange
 
@@ -42,7 +49,11 @@ export const LineEditor = ({
     editor.current = new EditorJS({
       holder: dom.current,
       placeholder,
-      onReady: () => setIsReady(true),
+      onReady: () => {
+        // undo.current = new Undo({ editor: editor.current })
+        new DragDrop(editor.current)
+        setIsReady(true)
+      },
       onChange: (api, event) => {
         editor.current.save().then(outputData => {
           // console.log('saveData', outputData)
@@ -210,6 +221,7 @@ export const LineEditor = ({
         const _value = JSON.parse(value)
         if (_value.blocks && _value.time && _value.version) {
           editor.current.render(_value)
+          // undo.initialize(_value)
         } else {
           throw '不是此编辑器保存的数据，无法编辑：' + _value
         }

@@ -1,6 +1,6 @@
 {
   "name": "duxweb",
-  "version": "1.0.45",
+  "version": "1.0.47",
   "description": "DUX Web端框架",
   "main": "./src/index.js",
   "homepage": "https://github.com/ShaoGongBra/duxweb",
@@ -28,8 +28,10 @@
     "@uiw/react-amap": "^4.5.0",
     "apexcharts": "^3.36.3",
     "crypto-js": "^4.1.1",
+    "editorjs-drag-drop": "^1.1.13",
     "editorjs-text-alignment-blocktune": "^1.0.3",
     "editorjs-text-color-plugin": "^2.0.4",
+    "editorjs-undo": "^2.0.22",
     "moment": "^2.29.4",
     "overlayscrollbars": "^2.1.0",
     "overlayscrollbars-react": "^0.5.0",

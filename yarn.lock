@@ -873,6 +873,11 @@ dom-helpers@^5.0.1:
     "@babel/runtime" "^7.8.7"
     csstype "^3.0.2"
 
+editorjs-drag-drop@^1.1.13:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/editorjs-drag-drop/-/editorjs-drag-drop-1.1.13.tgz#273a5b36084226beb21503b104800ead6eefcc66"
+  integrity sha512-/82RIXP8/zix6Y8/Mnonk1z7XljFvKmsIFbCrP6JTbdWztqoApyUCsnouHTZ4tF51/BTszYV3Z9ennQrXrHCzA==
+
 editorjs-text-alignment-blocktune@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/editorjs-text-alignment-blocktune/-/editorjs-text-alignment-blocktune-1.0.3.tgz#7942fe2d3fbdbd7fcfd10fbb9b341c97ec3eb84f"
@@ -882,6 +887,13 @@ editorjs-text-color-plugin@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/editorjs-text-color-plugin/-/editorjs-text-color-plugin-2.0.4.tgz#6e143c9507abe59da54ca0f8d6f9ffb14447c29d"
   integrity sha512-QpibTkOxs3ndlKNOLT8ZlC4ktc3/eKIajiLO0Jm/hh9AJug/CrM1/rAvHy+ldfUKavbWeI+YZvgjad0YTyoyGw==
+
+editorjs-undo@^2.0.22:
+  version "2.0.22"
+  resolved "https://registry.yarnpkg.com/editorjs-undo/-/editorjs-undo-2.0.22.tgz#3250418ce61f8fde05ea04e141ca5920e0894650"
+  integrity sha512-g3S3mDwUzOKYFS8uLr84b0nwMdV5YPvmVrrr9g2C0UrKdJSPFQUzoJY4HB+O4mvBsMvNJr9nnTFi/ahGpd0vuQ==
+  dependencies:
+    vanilla-caret-js "^1.0.1"
 
 fault@^1.0.0:
   version "1.0.4"
@@ -1335,6 +1347,11 @@ use-sidecar@^1.1.2:
   dependencies:
     detect-node-es "^1.1.0"
     tslib "^2.0.0"
+
+vanilla-caret-js@^1.0.1:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vanilla-caret-js/-/vanilla-caret-js-1.1.0.tgz#851acd7be81998223ce69ae1b62e03f472fa4e90"
+  integrity sha512-vl3R4Xjqb+xnM0gYyg+wcqWGYwKKnkz58Yj29/FQB+w+yP7R8IR1DGoJnDIs05moEZiGlQUTabPMoEtnQNcrpQ==
 
 xtend@^4.0.0:
   version "4.0.2"
