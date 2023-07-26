@@ -4,8 +4,7 @@ import { useDocSize, request, route } from '../../utils'
 import { Page } from './index';
 import Header from './Header';
 
-
-export function ModalForm({ url, timeout, infoUrl, infoSet = true, layout, onSubmit, className, children }) {
+export function ModalForm({ url, timeout, infoUrl, infoSet = true, layout, onSubmit, className, children, cancel = true, submit = true }) {
   const [size, sizeType] = useDocSize()
   const [form] = ArcoForm.useForm()
   const [disabled, setDisabled] = useState(true)
@@ -50,15 +49,15 @@ export function ModalForm({ url, timeout, infoUrl, infoSet = true, layout, onSub
           {typeof children === 'function' ? children({ data, form }) : children}
         </ArcoForm>
       </div>
-      <div className='arco-modal-footer'>
-        <Button
+      {(cancel || submit) && <div className='arco-modal-footer'>
+        {cancel && <Button
           onClick={() => {
             route.closeModal(false)
           }}
         >
           取消
-        </Button>
-        <Button
+        </Button>}
+        {submit && <Button
           type='primary'
           disabled={disabled}
           loading={loading}
@@ -106,14 +105,14 @@ export function ModalForm({ url, timeout, infoUrl, infoSet = true, layout, onSub
           }}
         >
           提交
-        </Button>
-      </div>
+        </Button>}
+      </div>}
     </div>
   )
 }
 
 
-export function PageForm({ url, timeout, infoUrl, onSubmit, title, children }) {
+export function PageForm({ url, timeout, infoUrl, onSubmit, title, children, reset = true, submit = true }) {
   const [form] = ArcoForm.useForm()
   const [disabled, setDisabled] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -150,12 +149,12 @@ export function PageForm({ url, timeout, infoUrl, onSubmit, title, children }) {
           title={title}
           menus={
             <>
-              <Button
+              {reset && <Button
                 onClick={() => form.setFieldsValue(defaultValue.current)}
               >
                 重置
-              </Button>
-              <Button
+              </Button>}
+              {submit && <Button
                 type='primary'
                 disabled={disabled}
                 loading={loading}
@@ -197,13 +196,13 @@ export function PageForm({ url, timeout, infoUrl, onSubmit, title, children }) {
                           form.setFields($fields);
                         }
                       }).finally(() => {
-                      setLoading(false)
-                    })
+                        setLoading(false)
+                      })
                   })
                 }}
               >
                 提交
-              </Button>
+              </Button>}
             </>
           }
         />
