@@ -68,6 +68,14 @@ export const Login = ({ onLogin }) => {
     }
   })
 
+  // 设置站点标题
+  useEffect(() => {
+    const title = loginConfig.siteTitle || loginConfig.title
+    if (title) {
+      document.title = title
+    }
+  }, [loginConfig.siteTitle, loginConfig.title])
+
   // 是否是手机号登录
   const [phoneLogin, setPhoneLogin] = useState(false)
 
