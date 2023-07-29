@@ -1,0 +1,31 @@
+.upload-loading {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #000;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  border-right-color: rgba(0, 0, 0, 0.2);
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  border-radius: 100%;
+
+  animation: circle infinite 0.75s linear;
+}
+.upload-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #333;
+  padding: 15px 0;
+  border: 1px solid #e2e2e2;
+}
+
+@keyframes circle {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
