@@ -69,7 +69,8 @@ export class VideoTool {
 
   upload() {
     upload({
-      accept: 'video/*'
+      accept: 'video/*',
+      uploadType: 'drive'
     }).start(() => {
       this._render(this.container, 0)
     }).progress(progress => {

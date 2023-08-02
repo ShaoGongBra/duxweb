@@ -62,6 +62,7 @@ export class ImageTool {
       accept: 'image/*',
       isImage: true,
       quality: 0.8,
+      uploadType: 'drive'
     }).start(() => {
       this._render(this.container, 0)
     }).progress(progress => {
