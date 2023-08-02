@@ -219,7 +219,7 @@ export const LineEditor = ({
     if (value && currentValue.current !== value) {
       try {
         const _value = JSON.parse(value)
-        if (_value.blocks && _value.time && _value.version) {
+        if (_value.blocks?.length && _value.time && _value.version) {
           editor.current.render(_value)
           // undo.initialize(_value)
         } else {
