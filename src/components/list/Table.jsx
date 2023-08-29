@@ -28,6 +28,11 @@ export const Table = forwardRef((
     }
   })
 
+  // 参数变化时重置为第一页
+  useMemo(() => {
+    setPagination(old => ({ ...old, current: 1 }))
+  }, [url, urlParams])
+
   const [loading, setLoading] = useState(false)
 
   // 模拟远程请求
