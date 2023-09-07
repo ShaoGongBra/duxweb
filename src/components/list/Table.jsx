@@ -28,10 +28,11 @@ export const Table = forwardRef((
     }
   })
 
+  const urlParamsJson = useMemo(() => JSON.stringify(urlParams), [urlParams])
   // 参数变化时重置为第一页
   useMemo(() => {
     setPagination(old => ({ ...old, current: 1 }))
-  }, [url, urlParams])
+  }, [url, urlParamsJson])
 
   const [loading, setLoading] = useState(false)
 
