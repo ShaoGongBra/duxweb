@@ -34,6 +34,7 @@ export const LinkModal = ({
   params,
   name,
   title,
+  config,
   table,
   button,
   onModal
@@ -48,7 +49,8 @@ export const LinkModal = ({
               url,
               params,
               {
-                title: title
+                title,
+                ...config
               }
             )
             .getData()
