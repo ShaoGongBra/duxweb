@@ -1,9 +1,9 @@
-import React, {useEffect, useMemo} from 'react'
-import {Button, Input, InputNumber, Switch, Table} from '@arco-design/web-react'
-import {IconClose, IconDoubleDown, IconPlus} from '@arco-design/web-react/icon'
-import {deepCopy} from '../../utils'
+import React, { useEffect, useMemo } from 'react'
+import { Button, Input, InputNumber, Switch, Table } from '@arco-design/web-react'
+import { IconClose, IconDoubleDown, IconPlus } from '@arco-design/web-react/icon'
+import { deepCopy } from '../../utils'
 
-export const Spec = ({disabledAdd, fields, value, onChange}) => {
+export const Spec = ({ disabledAdd, fields, widths, value, onChange }) => {
 
   const [spec, sku] = [value?.spec || [], value?.sku || []]
 
@@ -32,7 +32,7 @@ export const Spec = ({disabledAdd, fields, value, onChange}) => {
         dataIndex: 'spec[' + index + ']',
       })
     })
-    fields?.map(item => {
+    fields?.map((item, index) => {
       cols.push({
         title: <div className='flex'>
           <div className='flex-auto'>{item.name}</div>
@@ -46,25 +46,25 @@ export const Spec = ({disabledAdd, fields, value, onChange}) => {
               spec,
               sku: tmp
             })
-          }}/></div>
+          }} /></div>
         </div>,
         dataIndex: item.field,
-        width: 120,
+        width: widths?.[index] || 120,
         render: (_, record, index) => {
           if (item.type === 'price') {
             return <InputNumber value={record[item.field]} disabled={item.disabled ? true : false} onChange={v => {
               editData(index, item.field, v)
-            }} step={0.01} precision={2}/>
+            }} step={0.01} precision={2} />
           }
           if (item.type === 'number') {
             return <InputNumber value={record[item.field]} disabled={item.disabled ? true : false} onChange={v => {
               editData(index, item.field, v)
-            }}/>
+            }} />
           }
           if (item.type === 'text') {
             return <Input value={record[item.field]} disabled={item.disabled ? true : false} onChange={v => {
               editData(index, item.field, v)
-            }}/>
+            }} />
           }
         },
       })
@@ -76,7 +76,7 @@ export const Spec = ({disabledAdd, fields, value, onChange}) => {
       render: (_, record, index) => {
         return <Switch checked={record.status} onChange={v => {
           editData(index, 'status', v)
-        }}/>
+        }} />
       }
     })
 
@@ -167,7 +167,7 @@ export const Spec = ({disabledAdd, fields, value, onChange}) => {
         <div className='flex-grow flex flex-col lg:flex-row gap-4 lg:items-center'>
           <div>
             <Input
-              style={{width: '160px'}}
+              style={{ width: '160px' }}
               value={item.name}
               onChange={(value) => {
                 const tmp = [...spec]
@@ -206,7 +206,7 @@ export const Spec = ({disabledAdd, fields, value, onChange}) => {
                       spec: tmp
                     })
                   }}
-                  style={{width: '160px'}}
+                  style={{ width: '160px' }}
                   suffix={<IconClose onClick={() => {
                     const tmp = [...spec]
                     tmp[index].spec.splice(i, 1)
@@ -222,7 +222,7 @@ export const Spec = ({disabledAdd, fields, value, onChange}) => {
             <div>
               <div className='relative'>
 
-                <Button type='outline' icon={<IconPlus/>} onClick={() => {
+                <Button type='outline' icon={<IconPlus />} onClick={() => {
                   const tmp = [...spec]
                   tmp[index].spec.push('')
                   onChange?.({
@@ -238,10 +238,10 @@ export const Spec = ({disabledAdd, fields, value, onChange}) => {
     </div>))}
     <div className='mt-3'>
       <Table columns={columns} data={sku || []}
-             scroll={{
-               x: 1000,
-             }}
-             pagination={false}/>
+        scroll={{
+          x: 1000,
+        }}
+        pagination={false} />
     </div>
   </div>
 }
