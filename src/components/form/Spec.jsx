@@ -3,7 +3,7 @@ import { Button, Input, InputNumber, Switch, Table } from '@arco-design/web-reac
 import { IconClose, IconDoubleDown, IconPlus } from '@arco-design/web-react/icon'
 import { deepCopy } from '../../utils'
 
-export const Spec = ({ disabledAdd, fields, widths, value, onChange }) => {
+export const Spec = ({ disabledAdd, fields, value, onChange }) => {
 
   const [spec, sku] = [value?.spec || [], value?.sku || []]
 
@@ -32,7 +32,7 @@ export const Spec = ({ disabledAdd, fields, widths, value, onChange }) => {
         dataIndex: 'spec[' + index + ']',
       })
     })
-    fields?.map((item, index) => {
+    fields?.map(item => {
       cols.push({
         title: <div className='flex'>
           <div className='flex-auto'>{item.name}</div>
@@ -49,7 +49,7 @@ export const Spec = ({ disabledAdd, fields, widths, value, onChange }) => {
           }} /></div>
         </div>,
         dataIndex: item.field,
-        width: widths?.[index] || 120,
+        width: item.width || 120,
         render: (_, record, index) => {
           if (item.type === 'price') {
             return <InputNumber value={record[item.field]} disabled={item.disabled ? true : false} onChange={v => {
