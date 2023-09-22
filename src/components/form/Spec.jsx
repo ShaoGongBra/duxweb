@@ -66,6 +66,11 @@ export const Spec = ({ disabledAdd, fields, value, onChange }) => {
               editData(index, item.field, v)
             }} />
           }
+          if (item.type === 'textArea') {
+            return <Input.TextArea autoSize={{ minRows: 1, maxRows: item.maxRows }} value={record[item.field]} disabled={item.disabled ? true : false} onChange={v => {
+              editData(index, item.field, v)
+            }} />
+          }
         },
       })
     })
