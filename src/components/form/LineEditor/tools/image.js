@@ -13,7 +13,8 @@ export class ImageTool {
     }
   }
 
-  constructor({ data }) {
+  constructor({ data, api }) {
+    this.api = api
     this.data = data
   }
 
@@ -36,7 +37,7 @@ export class ImageTool {
       add.innerHTML = '上传图片'
       add.classList.add('upload-box')
       add.addEventListener('click', () => {
-        this.upload()
+        this.upload(true)
       })
       container.innerHTML = ''
       container.appendChild(add)
@@ -56,8 +57,9 @@ export class ImageTool {
     }
   }
 
-  upload() {
+  upload(multiple) {
     upload({
+      multiple,
       // capture,
       accept: 'image/*',
       isImage: true,
@@ -70,6 +72,13 @@ export class ImageTool {
     }).then(res => {
       this.data.src = res[0]
       this._render(this.container, res[0])
+      if (res.length > 1) {
+        // 渲染多张图片
+        const currentIndex = this.api.blocks.getCurrentBlockIndex()
+        res.slice(1).forEach((item, index) => {
+          this.api.blocks.insert('image', { src: item }, {}, currentIndex + index)
+        })
+      }
     }).catch(err => {
       this._render(this.container, this.data.src)
     })
@@ -81,7 +90,7 @@ export class ImageTool {
    * @public
    */
   appendCallback() {
-    this.upload()
+    this.upload(true)
   }
 
   renderSettings() {
