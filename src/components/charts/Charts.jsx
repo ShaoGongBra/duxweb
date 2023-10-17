@@ -574,7 +574,7 @@ export default class Charts {
       })
       let data = []
       labels.forEach(label => {
-        data.push(group[label] || 0)
+        data.push(+(group[label] || 0).toFixed(2))
       })
       this.series.push({
         name: datum.name,
