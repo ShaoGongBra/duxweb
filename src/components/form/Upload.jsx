@@ -74,7 +74,7 @@ export function UploadImages({
   }
 
   const add = index => {
-    uploadFile({ multiple: false }).progress(res => {
+    uploadFile({ multiple: index === -1 }).progress(res => {
       let num = Math.trunc(res * 100)
       setProgress(num)
     }).start(() => {
@@ -190,7 +190,7 @@ export function UploadFiles({
   }
 
   const del = useCallback(index => {
-    if(disabled) {
+    if (disabled) {
       return
     }
     value.splice(index, 1)
@@ -198,7 +198,7 @@ export function UploadFiles({
   }, [onChange, value])
 
   const add = () => {
-    if(disabled) {
+    if (disabled) {
       return
     }
     uploadFile().progress(res => {
@@ -215,7 +215,7 @@ export function UploadFiles({
   }
 
   const sort = useCallback((index, type) => {
-    if(disabled) {
+    if (disabled) {
       return
     }
     const del = value.splice(index, 1)
@@ -315,14 +315,14 @@ export function UploadFile({
   }
 
   const del = useCallback(() => {
-    if(disabled) {
+    if (disabled) {
       return
     }
     onChange?.({})
   }, [onChange, value])
 
   const add = () => {
-    if(disabled) {
+    if (disabled) {
       return
     }
     uploadFile().progress(res => {
