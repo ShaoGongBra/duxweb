@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState, useCallback, useRef } from 'react'
-import { Button as ArcoButton, Form } from '@arco-design/web-react'
-import { useDocSize, createContext, route, useRouter, deepCopy } from '../../utils'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {Button as ArcoButton, Form} from '@arco-design/web-react'
+import {createContext, deepCopy, route, useDocSize, useRouter} from '../../utils'
 
 const FormItem = Form.Item
 
@@ -8,32 +8,32 @@ const FormItem = Form.Item
 const [filterContext, useFilterContext] = createContext([{}, {}])
 
 export const Filter = ({
-  children,
-  // 绑定地址栏的url
-  bindUrl,
-  // 是否快速响应 当输入的时候就获得结果
-  quick = true,
-  defaultData: propsDefaultData
-}) => {
+                         children,
+                         // 绑定地址栏的url
+                         bindUrl,
+                         // 是否快速响应 当输入的时候就获得结果
+                         quick = true,
+                         defaultData: propsDefaultData
+                       }) => {
 
-  const { params } = useRouter()
+  const {params} = useRouter()
 
   const defaultData = useMemo(() => {
     if (bindUrl) {
-      return { ...propsDefaultData, ...params }
+      return {...propsDefaultData, ...params}
     } else {
       return propsDefaultData || {}
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const [realData, setRealData] = useState({ ...defaultData })
+  const [realData, setRealData] = useState({...defaultData})
 
   // 将值保存起来
   const realDataRef = useRef(realData)
   realDataRef.current = realData
 
-  const [resultData, setResultData] = useState({ ...defaultData })
+  const [resultData, setResultData] = useState({...defaultData})
 
   useEffect(() => {
     bindUrl && route.change(resultData)
@@ -50,12 +50,12 @@ export const Filter = ({
   const setValue = useCallback((key, value) => {
     setRealData(old => {
       old[key] = value
-      return { ...old }
+      return {...old}
     })
   }, [])
 
   const setValues = useCallback(data => {
-    setRealData(old => ({ ...old, ...data }))
+    setRealData(old => ({...old, ...data}))
   }, [])
 
   const submit = useCallback(() => {
@@ -66,11 +66,11 @@ export const Filter = ({
   }, [quick])
 
   const reset = useCallback(() => {
-    setRealData({ ...defaultData })
-    setResultData({ ...defaultData })
+    setRealData({...defaultData})
+    setResultData({...defaultData})
   }, [defaultData])
 
-  const result = [resultData, { realData, setValue, setValues, submit, reset }]
+  const result = [resultData, {realData, setValue, setValues, submit, reset}]
 
   return <filterContext.Provider value={result}>
     {
@@ -82,11 +82,11 @@ export const Filter = ({
 }
 
 const Item = ({
-  children,
-  trigger = 'onChange',
-  triggerPropName = 'value',
-  field
-}) => {
+                children,
+                trigger = 'onChange',
+                triggerPropName = 'value',
+                field
+              }) => {
 
   const [, filter] = useFilterContext()
 
@@ -95,7 +95,7 @@ const Item = ({
   const child = useMemo(() => {
     let _child = children
     if (typeof children === 'function') {
-      _child = children({ value, ...filter })
+      _child = children({value, ...filter})
     }
     if (React.isValidElement(_child)) {
       _child = React.cloneElement(_child, {
@@ -111,12 +111,12 @@ const Item = ({
 
 const Submit = props => {
   const [, filter] = useFilterContext()
-  return <ArcoButton type='primary' {...props} onClick={filter.submit} />
+  return <ArcoButton type='primary' {...props} onClick={filter.submit}/>
 }
 
 const Reset = props => {
+  return <ArcoButton {...props} onClick={filter.reset}/>
   const [, filter] = useFilterContext()
-  return <ArcoButton {...props} onClick={filter.reset} />
 }
 
 Filter.useFilterContext = useFilterContext
@@ -124,7 +124,7 @@ Filter.Item = Item
 Filter.Submit = Submit
 Filter.Reset = Reset
 
-export const FilterList = ({ items, tableData, className }) => {
+export const FilterList = ({items, tableData, className}) => {
   const [size, sizeType] = useDocSize()
 
   return (
@@ -143,7 +143,7 @@ export const FilterList = ({ items, tableData, className }) => {
                 <div className='flex-none md:min-w-20 md:text-right'>{vo?.title}</div>
                 <div className='flex-auto'>
                   <Item field={vo?.name}>
-                    {typeof vo?.render === 'function' ? vo?.render({ tableData }) : vo?.render}
+                    {typeof vo?.render === 'function' ? vo?.render({tableData}) : vo?.render}
                   </Item>
                 </div>
               </div>
