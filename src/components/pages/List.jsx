@@ -68,7 +68,10 @@ export default function PageList(
                       return
                     }
                     return <div className='md:max-w-150'><Filter.Item key={key}
-                                                                      field={vo?.name}>{typeof vo?.render === 'function' ? vo?.render({tableData}) : vo?.render}</Filter.Item>
+                                                                      field={vo?.name}>{(itemFilter) => (typeof vo?.render === 'function' ? vo?.render({
+                      tableData,
+                      itemFilter
+                    }) : vo?.render)}</Filter.Item>
                     </div>
                   })
                 }
