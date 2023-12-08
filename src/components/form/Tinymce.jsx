@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react'
-import {Editor} from '@tinymce/tinymce-react'
+import React, { useEffect, useState } from 'react'
+import { Editor } from '@tinymce/tinymce-react'
 
 // TinyMCE so the global var exists
 // eslint-disable-next-line no-unused-vars
+import tinymce from 'tinymce/tinymce'
 // DOM model
 import 'tinymce/models/dom/model'
 // Theme
@@ -53,7 +54,7 @@ import contentCss from 'tinymce/skins/content/default/content.min.css?raw'
 // eslint-disable-next-line import/no-unresolved
 import contentUiCss from 'tinymce/skins/ui/oxide/content.min.css?raw'
 
-import {upload} from '../../utils/request'
+import { upload } from '../../utils/request'
 
 // 语言包
 import './tinymce.zh-cn'
@@ -61,7 +62,7 @@ import './tinymce.zh-cn'
 
 import './plugins/plugin'
 
-const BaseEditor = ({init, ...rest}) => {
+const BaseEditor = ({ init, ...rest }) => {
 
   return (
     <Editor
@@ -101,11 +102,11 @@ const initData = {
   content_style: 'img {max-width:100%;}',
   paste_data_images: true,
   images_upload_handler: (blobInfo, progress) => {
-    const types = {png: 'png', jpg: 'jpeg', jpeg: 'jpeg', gif: 'gif', bmp: 'bmp'}
+    const types = { png: 'png', jpg: 'jpeg', jpeg: 'jpeg', gif: 'gif', bmp: 'bmp' }
     const name = blobInfo.filename()
     const names = name.split('.')
     return upload({
-      files: [new File([blobInfo.blob()], name, {type: 'image/' + types[names[names.length - 1]]})],
+      files: [new File([blobInfo.blob()], name, { type: 'image/' + types[names[names.length - 1]] })],
       isImage: true
     }).progress(progress).then(res => res[0])
   },
@@ -169,10 +170,10 @@ const initData = {
 }
 
 export const TinymceEditor = ({
-                                value,
-                                onChange,
-                                disabled
-                              }) => {
+  value,
+  onChange,
+  disabled
+}) => {
 
   // const editorRef = useRef(null)
 
