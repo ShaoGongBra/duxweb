@@ -14,8 +14,8 @@ class GlobalConfig extends ObjectManage {
       duxweb: {
         // 高德地图设置
         map: {
-          key: '5e614af1d1fc306c69deb8893cd837eb',
-          apiKey: 'f26f9947afc4c16cf467afbdaa53798a'
+          key: '',
+          apiKey: ''
         },
         // 上传配置
         upload: {
