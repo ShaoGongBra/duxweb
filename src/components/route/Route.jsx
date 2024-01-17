@@ -46,6 +46,7 @@ const ModalItem = ({ item }) => {
       footer={null}
       modalRender={modal => <Draggable handle='.arco-modal-header'>{modal}</Draggable>}
       onCancel={route.closeModal}
+      maskClosable={false}
       {...item.config}
       className={`route-modal max-w-full w-auto ${item.config?.className}`}
     >
