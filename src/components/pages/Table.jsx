@@ -20,7 +20,8 @@ export default forwardRef(({
   dataCallBack, // 数据回调
   filterRender,
   header,
-  sortData
+  sortData,
+  bindUrl
 }, ref) => {
 
   const table = useRef(null)
@@ -49,6 +50,7 @@ export default forwardRef(({
       permission={permission}
       filterRender={filterRender}
       header={header}
+      bindUrl={bindUrl}
     >
       {([filterData]) => {
         const requestData = useMemo(() => {

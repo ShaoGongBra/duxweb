@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react'
-import {Button, Input} from '@arco-design/web-react'
-import {IconFilter} from '@arco-design/web-react/icon'
+import React, { useEffect, useState } from 'react'
+import { Button, Input } from '@arco-design/web-react'
+import { IconFilter } from '@arco-design/web-react/icon'
 import Header from './Header'
 import Page from './Page'
-import {Filter, FilterList} from '../list'
-import {Permission as DuxPermission} from '../../index'
+import { Filter, FilterList } from '../list'
+import { Permission as DuxPermission } from '../../index'
 
 const InputSearch = Input.Search
 
@@ -21,7 +21,8 @@ export default function PageList(
     permission, // 权限标记
     children,
     filterRender,
-    header
+    header,
+    bindUrl = true
   },
 ) {
   const [filterColl, setFilterColl] = useState(false)
@@ -38,7 +39,7 @@ export default function PageList(
     setFilterExtend(extendNum)
   }, filters)
 
-  const ContentPage = <Filter defaultData={defaultFilterData} bindUrl>
+  const ContentPage = <Filter defaultData={defaultFilterData} bindUrl={bindUrl}>
     {([filterData, filterAction]) => <Page
       header={
         <>
@@ -68,12 +69,12 @@ export default function PageList(
                       return
                     }
                     return <div className='md:max-w-150'><Filter.Item key={key}
-                                                                      field={vo?.name}>{(itemFilter) => {
-                      return typeof vo?.render === 'function' ? vo?.render({
-                        tableData,
-                        itemFilter
-                      }) : vo?.render
-                    }}</Filter.Item>
+                      field={vo?.name}>{(itemFilter) => {
+                        return typeof vo?.render === 'function' ? vo?.render({
+                          tableData,
+                          itemFilter
+                        }) : vo?.render
+                      }}</Filter.Item>
                     </div>
                   })
                 }
@@ -81,7 +82,7 @@ export default function PageList(
                 {!!filterExtend && (
                   <Button
                     type='outline'
-                    icon={<IconFilter/>}
+                    icon={<IconFilter />}
                     onClick={() => {
                       setFilterColl(!filterColl)
                     }}
@@ -109,7 +110,7 @@ export default function PageList(
               return false;
             }
             return true;
-          })} tableData={tableData}/>
+          })} tableData={tableData} />
         </div>
       )}
 
