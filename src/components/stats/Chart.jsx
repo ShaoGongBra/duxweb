@@ -27,8 +27,8 @@ export function StatsChart({
     request({
       url: url,
       data: {
-        start_date: chartDate[0],
-        stop_date: chartDate[1],
+        start_date: chartDate?.[0],
+        stop_date: chartDate?.[1],
       }
     }).then(res => {
       setChartData(res?.list || [])
@@ -79,7 +79,7 @@ export function StatsChart({
     }
 
     if (date.length) {
-      _cart.setDate(chartDate[0], chartDate[1], dateFormat, dateWay)
+      _cart.setDate(chartDate?.[0], chartDate?.[1], dateFormat, dateWay)
     }
 
     return [_cart.render()]
