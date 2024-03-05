@@ -1,6 +1,6 @@
 import {useCharts} from '../charts/Charts'
 import React, {useEffect, useMemo, useState} from 'react'
-import {DatePicker} from '@arco-design/web-react'
+import {DatePicker,Message} from '@arco-design/web-react'
 import {request} from "../../utils"
 
 const {RangePicker} = DatePicker
@@ -32,6 +32,8 @@ export function StatsChart({
       }
     }).then(res => {
       setChartData(res?.list || [])
+    }).catch(res => {
+      Message.error(res.message)
     })
   }
 
