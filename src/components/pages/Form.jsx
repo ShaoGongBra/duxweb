@@ -82,7 +82,10 @@ export function ModalForm({ url, timeout, infoUrl, infoSet = true, layout, onSub
                 }
               })
                 .then(res => {
-                  onSubmit?.(res)
+                  if(onSubmit?.(res) === false){
+                    setLoading(false)
+                    return
+                  }
                   setLoading(false)
                   route.closeModal(true)
                 })
