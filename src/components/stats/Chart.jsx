@@ -96,7 +96,7 @@ export function StatsChart({
           <div className='text-color-1 text-title-1 font-bold'>{title}</div>
           <div className='text-color-2'>{subtitle}</div>
         </div>
-        <div className='flex flex-col md:flex-row gap-4'>
+        <div className='flex flex-col md:flex-row gap-4 md:items-center'>
           {!!fastDate?.length && <div className='md:max-w-150'>
             {fastDate.map((item) => (
               <Button size='small' type='text'
