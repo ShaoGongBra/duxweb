@@ -1,21 +1,23 @@
-import {useCharts} from '../charts/Charts'
-import React, {useEffect, useMemo, useState} from 'react'
-import {DatePicker,Message} from '@arco-design/web-react'
-import {request} from "../../utils"
+import { useCharts } from '../charts/Charts'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Button, DatePicker, Message } from '@arco-design/web-react'
+import { request } from "../../utils"
+import { route } from "duxweb";
 
-const {RangePicker} = DatePicker
+const { RangePicker } = DatePicker
 
 export function StatsChart({
-                             title = '',
-                             subtitle = '',
-                             date = [],
-                             dateFormat = 'YYYY-MM-DD',
-                             dateWay = 'days',
-                             height = 200,
-                             chart = 'line',
-                             legend = false,
-                             url
-                           }) {
+  title = '',
+  subtitle = '',
+  date = [],
+  dateFormat = 'YYYY-MM-DD',
+  dateWay = 'days',
+  height = 200,
+  chart = 'line',
+  legend = false,
+  url,
+  fastDate = []
+}) {
 
   const [chartData, setChartData] = useState([])
   const [chartDate, setChatDate] = useState(date)
@@ -94,9 +96,23 @@ export function StatsChart({
           <div className='text-color-1 text-title-1 font-bold'>{title}</div>
           <div className='text-color-2'>{subtitle}</div>
         </div>
-        <div>{date.length ? <RangePicker className='flex' mode='date' value={chartDate} onChange={(value) => {
-          setChatDate(value)
-        }}/> : ''}</div>
+        <div className='flex flex-col md:flex-row gap-4'>
+          {!!fastDate?.length && <div className='md:max-w-150'>
+            {fastDate.map((item) => (
+              <Button size='small' type='text'
+                onClick={() => {
+                  setChatDate(item.value)
+                }}>
+                {item.label}
+              </Button>
+            ))}
+          </div>}
+          <div className='md:max-w-150'>
+            {date.length ? <RangePicker mode='date' value={chartDate} onChange={(value) => {
+              setChatDate(value)
+            }} /> : ''}
+          </div>
+        </div>
       </div>
       {cart}
     </div>
