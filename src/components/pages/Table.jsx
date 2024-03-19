@@ -15,6 +15,7 @@ export default forwardRef(({
   limit = 20, // 每页数量
   primaryKey = 'id',
   width = 1000,
+  height,
   permission, // 权限标记
   tableProps,
   dataCallBack, // 数据回调
@@ -65,6 +66,7 @@ export default forwardRef(({
           limit={limit}
           primaryKey={primaryKey}
           width={width}
+          height={height}
           tableProps={tableProps}
           onListData={(e) => {
             setTableDat(e)

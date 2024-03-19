@@ -10,6 +10,7 @@ export const Table = forwardRef((
     limit = 20,
     primaryKey = 'id',
     width = 1000,
+    height,
     tableProps,
     onListData
   }, ref) => {
@@ -17,6 +18,7 @@ export const Table = forwardRef((
   const [data, setData] = useState([])
 
   const [pagination, setPagination] = useState({
+    sizeOptions: [20, 50, 100, 200],
     sizeCanChange: true,
     showTotal: true,
     total: 0,
@@ -86,7 +88,8 @@ export const Table = forwardRef((
       rowKey={primaryKey}
       pagination={pagination}
       scroll={{
-        x: width
+        x: width,
+        y: height
       }}
       {...tableProps}
     />

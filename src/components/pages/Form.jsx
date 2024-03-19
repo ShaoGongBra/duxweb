@@ -82,7 +82,7 @@ export function ModalForm({ url, timeout, infoUrl, infoSet = true, layout, onSub
                 }
               })
                 .then(res => {
-                  if(onSubmit?.(res) === false){
+                  if (onSubmit?.(res) === false) {
                     setLoading(false)
                     return
                   }
@@ -107,7 +107,7 @@ export function ModalForm({ url, timeout, infoUrl, infoSet = true, layout, onSub
             })
           }}
         >
-          提交
+          保存
         </Button>}
       </div>}
     </div>
@@ -204,7 +204,7 @@ export function PageForm({ url, timeout, infoUrl, onSubmit, title, children, res
                   })
                 }}
               >
-                提交
+                保存
               </Button>}
             </>
           }

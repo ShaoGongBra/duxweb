@@ -18,7 +18,7 @@ export function UrlTree({ url, ...props }) {
       })
   }, [url])
 
-  return <div>
+  return <div className={'h-full'}>
     <Input.Search
       style={{
         marginBottom: 8,
@@ -26,6 +26,7 @@ export function UrlTree({ url, ...props }) {
       onChange={setInputValue}
     />
     {!!treeData.length && <Tree
+      className={'overflow-y-auto h-full'}
       treeData={treeData}
       autoExpandParent
       renderTitle={({ title }) => {
