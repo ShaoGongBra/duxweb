@@ -26,7 +26,7 @@ export function UrlTree({ url, ...props }) {
       onChange={setInputValue}
     />
     {!!treeData.length && <Tree
-      className={'overflow-y-auto h-full'}
+      className={'overflow-y-auto h-9/10'}
       treeData={treeData}
       autoExpandParent
       renderTitle={({ title }) => {
