@@ -40,6 +40,10 @@ export const Table = forwardRef((
 
   // 模拟远程请求
   const fetchData = useCallback(pageInfo => {
+    if (!url) {
+      setData([]);
+      return;
+    }
     setLoading(true)
     request({
       url,
