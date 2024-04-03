@@ -56,7 +56,7 @@ export default function PageList(
                       itemFilter => <InputSearch
                         allowClear
                         value={itemFilter.value}
-                        placeholder='请输入关键词进行搜索'
+                        placeholder={typeof search === 'string' ? search : '请输入关键词进行搜索'}
                         onChange={v => itemFilter.setValue('keyword', v)}
                         onPressEnter={itemFilter.submit}
                       />
