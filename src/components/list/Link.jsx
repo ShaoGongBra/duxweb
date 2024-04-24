@@ -96,7 +96,6 @@ export function LinkConfirm(
           middle: {
             result: [
               async res => {
-                setLoading(false)
                 if (res.statusCode === 200) {
                   Message.success(res.data.message)
                 }
@@ -106,10 +105,12 @@ export function LinkConfirm(
           }
         })
           .then(() => {
+            setLoading(false)
             table?.current?.reload()
             onConfirm?.()
           })
           .catch(res => {
+            setLoading(false)
             Message.error(res.message)
           })
       }}
