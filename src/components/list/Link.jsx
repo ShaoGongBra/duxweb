@@ -76,7 +76,8 @@ export function LinkConfirm(
     table,
     name,
     button,
-    onConfirm
+    onConfirm,
+    timeout
   }
 ) {
   return (<Permission mark={permission}>
@@ -89,6 +90,7 @@ export function LinkConfirm(
           url: url,
           method: method,
           data: params,
+          timeout: timeout,
           middle: {
             result: [
               async res => {

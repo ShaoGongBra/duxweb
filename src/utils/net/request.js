@@ -15,17 +15,17 @@ const requestReact = async ({ url, data, header, timeout, onController, ...optio
   onController(controller)
 
   const race = [
-    fetch(url, option),
-    asyncTimeOut(timeout)
+    fetch(url, option)
   ]
+  timeout && race.push(asyncTimeOut(timeout));
   const res = await Promise.race(race)
-  if (res.type === 'timeout') {
+  if (timeout && res.type === 'timeout') {
     // 终止请求
     controller.abort()
     throw { statusCode: 500, errMsg: '请求超时' }
   }
   // 清除定时器
-  race[1].clear()
+  timeout && race[1].clear()
   // 文件下载
   const fileNameEncode = res.headers.get('content-disposition')?.split?.('filename=')[1]
   if (fileNameEncode) {
@@ -153,7 +153,11 @@ const request = (() => {
           result = await execMiddle(middle.result, result, params)
           resolve(result)
         } catch (error) {
-          reject(error)
+          if (error?.statusCode) {
+            reject({ message: error.errMsg, code: error.statusCode })
+          } else {
+            reject({ message: error.message, code: error.code })
+          }
         }
       } else {
         // 配置处理返回数据

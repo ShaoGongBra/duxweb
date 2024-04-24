@@ -22,7 +22,8 @@ export default forwardRef(({
   filterRender,
   header,
   sortData,
-  bindUrl
+  bindUrl,
+  timeout
 }, ref) => {
 
   const table = useRef(null)
@@ -72,6 +73,7 @@ export default forwardRef(({
             setTableDat(e)
             dataCallBack?.(e)
           }}
+          timeout={timeout}
         />
       }}
     </PageList>

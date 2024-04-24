@@ -12,7 +12,8 @@ export const Table = forwardRef((
     width = 1000,
     height,
     tableProps,
-    onListData
+    onListData,
+    timeout
   }, ref) => {
 
   const [data, setData] = useState([])
@@ -48,6 +49,7 @@ export const Table = forwardRef((
     request({
       url,
       method: 'GET',
+      timeout: timeout,
       data: { page: pageInfo.current, limit: pageInfo.pageSize, ...urlParams }
     })
       .then(res => {
