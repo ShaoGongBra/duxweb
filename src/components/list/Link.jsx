@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Message, Popconfirm } from '@arco-design/web-react'
 import { Permission, request, route } from '../../index';
 
@@ -80,12 +80,14 @@ export function LinkConfirm(
     timeout
   }
 ) {
+  const [loading, setLoading] = useState(false)
   return (<Permission mark={permission}>
     <Popconfirm
       position='br'
       focusLock
       title={title}
       onOk={() => {
+        setLoading(true)
         request({
           url: url,
           method: method,
@@ -94,6 +96,7 @@ export function LinkConfirm(
           middle: {
             result: [
               async res => {
+                setLoading(false)
                 if (res.statusCode === 200) {
                   Message.success(res.data.message)
                 }
@@ -111,7 +114,7 @@ export function LinkConfirm(
           })
       }}
     >
-      <Button  {...button}>
+      <Button loading={loading}  {...button}>
         {name}
       </Button>
     </Popconfirm>
