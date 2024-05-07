@@ -1,6 +1,6 @@
 {
   "name": "duxweb",
-  "version": "1.0.83",
+  "version": "1.0.84",
   "description": "DUX Web端框架",
   "main": "./src/index.js",
   "homepage": "https://github.com/ShaoGongBra/duxweb",

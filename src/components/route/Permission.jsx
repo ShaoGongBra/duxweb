@@ -7,7 +7,10 @@ export const Permission = ({
   page,
   render
 }) => {
-  return !user.data[System.current]?.permission?.length || !mark || user.data[System.current]?.permission?.includes?.(mark)
+  return !user.data[System.current]?.permission?.length ||
+    !mark ||
+    (user.data[System.current]?.allPermission !== undefined && !user.data[System.current]?.allPermission?.includes?.(mark)) ||
+    user.data[System.current]?.permission?.includes?.(mark)
     ? children
     : page ? <div className='flex-grow flex items-center justify-center bg-gray-3'>
       <div className='text-center flex flex-col gap-4 justify-center items-center'>
