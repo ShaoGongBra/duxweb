@@ -175,9 +175,15 @@ class Menu extends ObjectManage {
             url: 'menu'
           })
           this.data[System.current] = res.main
+          const setUseData = {}
+          //兼容后端旧版本
           if (res?.permission !== undefined) {
-            user.setInfo({ permission: res.permission })
+            setUseData.permission = res.permission
           }
+          if (res?.allPermission !== undefined) {
+            setUseData.allPermission = res.allPermission
+          }
+          user.setInfo(setUseData)
           route.init()
           this.set({ ...this.data })
           remove()
